@@ -1,0 +1,2 @@
+# jgalligan
+Whitepaper Dev
