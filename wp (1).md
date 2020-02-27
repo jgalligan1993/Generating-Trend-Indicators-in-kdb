@@ -1,12 +1,12 @@
 ﻿
 
-# Simple Statistics in kdb+: Generating Statistics and Trend Indicators  
+# Generating Statistics and Trend Indicators in kdb+  
   
 ## Introduction  
   
 The compactness of kdb+ and the terseness of q means that the language is focused on high performing atomic capabilities  rather than wide range in-built functions. As a result users may sometimes develop libraries of often-used algorithms and  functions relevant to their specific domains for convenience and to support reuse. In this paper, we outline examples of  commonly used functions in finance that are built on native q functions.  
   
-The code is developed on ver 3.6 of kdb+ . Cryptocurrency data for Bitcoin and Ethereum from multiple exchanges is used in the examples provided.Graphs are displayed using Kx Analyst.  
+The code is developed on version 3.6 2019.03.07 of kdb+ . Cryptocurrency data for Bitcoin and Ethereum from multiple exchanges is used in the examples provided. Charts are displayed using Kx Analyst.  
   
 This whitepaper has 3 main parts:  
   
@@ -16,7 +16,7 @@ This whitepaper has 3 main parts:
 
 ## Data extraction  
   
-Data was captured in a similar process to the one used in the following [cryptocurrency blog](https://kx.com/blog/combining-high-frequency-cryptocurrency-venue-data-using-kdb/). Trade and Quote tick data for Etherium(ETH) and Bitcoin(BTC) dominated in the US dollar(USD) was collected from four exchanges:  
+Data was captured in a similar process to the one used in Eduard Silantyev's blog “Combining high-frequency cryptocurrency venue data using kdb+” . Trade and Quote tick data for Ethereum(ETH) and Bitcoin(BTC) denominated in the US dollar(USD) was collected from four exchanges:  
   
 1. Bitfinex  
 2. HitBtc  
@@ -25,7 +25,7 @@ Data was captured in a similar process to the one used in the following [cryptoc
   
   
   
-which span across May/June/July 2019. There is just over 2 months of data.  
+which span across May,June and July 2019. There is just over 2 months of data.  
   
 A Python API was created which connected to a kdb+ tickerplant. The tickerplant processed the messages and sent them to RDB which was written down to a HDB at the end of the day. Such details will not be elaborated on as the main focus of this whitepaper is on Simple Statistics and Trend Indicators. Please view the following resources for help with tick capture:  
   
@@ -33,179 +33,6 @@ A Python API was created which connected to a kdb+ tickerplant. The tickerplant 
 * [Disaster-recovery planning for kdb+ tick systems](https://code.kx.com/v2/wp/disaster-recovery/)  
 * [Query Routing: A kdb+ framework for a scalable, load balanced system](https://code.kx.com/v2/wp/query-routing/)  
   
-  
-## Simple Statistics  
-It is extremely easy and quick to calculate useful statistics using q/kdb as illustrated below.   
-```q  
-q)select minTp:min tp,cnt:count tp by date,sym,exch from trade where date=2019.05.08   
-date 		sym 	exch 	| minTp 	cnt  
----------------------------	| ---------------- 
-2019.05.08 BTC_USD BITFINEX	| 6007.8 	35326  
-2019.05.08 BTC_USD COINBASE	| 5656.26 	53512  
-2019.05.08 BTC_USD HITBTC 	| 5785.19 	151747 
-2019.05.08 BTC_USD KRAKEN 	| 5660 		13483  
-2019.05.08 ETH_USD BITFINEX	| 169.23 	24892 
-2019.05.08 ETH_USD COINBASE	| 162 		28067  
-2019.05.08 ETH_USD HITBTC 	| 164.84 	20197  
-2019.05.08 ETH_USD KRAKEN 	| 163.5 	10163  
-```  
-### Trade Functions  
-It can be useful to create a dictionary of functions that will be used continuously.. Below is sample of useful trade functions that are commonly used in analysis 
-```q  
-q)tradeFuncs  
-lowPr 		| (min;`tp)  
-highPr 		| (max;`tp)  
-tcnt 		| (#:;`tp)  
-avgPr 		| (avg;`tp)  
-vwap 		| (wavg;`ts;`tp)  
-volatility 	| ({100*dev[x]%avg[x]};`tp)  
-totalReturn	| ({100*reciprocal[last[x]]*max[x]-min[x]};`tp)  
-volume 		| (sum;`ts)  
-dollarVol 	| ({[ts;tp] sum[tp*ts]};`ts;`tp)  
-open 		| (*:;`tp)  
-close 		| (last;`tp)  
-twap 		| ({[t;p] reciprocal(sum td) %sum p*td:1_deltas[t],0D00:00:00.000000000};`time;`tp)  
-twas 		| ({[t;p] reciprocal(sum td) %sum p*td:1_deltas[t],0D00:00:00.000000000};`time;`ts)  
-avgSz 		| (avg;`ts)  
-minSz 		| (min;`ts)  
-maxSz 		| (max;`ts)  
-startTime 	| (min;`time)  
-endTime 	| (max;`time)  
-
-```  
-  
-These stats are easy to compute like open/close/min/max of price/size or count of trades to more complex calculations like avg price, volume weighted price(vwap), volume, dollar Volume. These functions all use aggregation functions in kdb+.  An example of how to calculate time-weighted calculations is seen in twap.  The below example shows how simple it is to compute.  
-
-```q  
-/Example 
-?[trade;((=;`date;2019.05.08);(=;`sym;enlist `ETH_USD));{x!x} `date`exch`sym;tradeFuncs] 
-```  
-  
-### Quote Functions  
-In addition to trade functions we can create a dictionary of quote-based statistics that are very common in data analysis.  
-    
-```q  
-q)quoteFuncs
-minAp  | (min;`ap)
-maxAp  | (max;`ap)
-minBp  | (min;`bp)
-maxBp  | (max;`bp)
-qcnt   | (#:;`ap)
-avgSprd| (avg;(-;`ap;`bp))
-maxSprd| (max;(-;`ap;`bp))
-minSprd| (min;(-;`ap;`bp))
-twAsk  | ({[t;p] reciprocal(sum td) %sum p*td:1_deltas[t],0D00:00:00.000000000};`time;`ap)
-twBid  | ({[t;p] reciprocal(sum td) %sum p*td:1_deltas[t],0D00:00:00.000000000};`time;`bp)
-twSprd | ({[t;p] reciprocal(sum td) %sum p*td:1_deltas[t],0D00:00:00.000000000};`time;(-;`ap;`bp))  
-/Example execution
-?[quote;((within;`date;2019.05.07 2019.05.09);(=;`sym;enlist `BTC_USD));{x!x} `date`exch`sym;quoteFuncs]
-```  
-A common request would be to find the last trade, or last trade at a particular time, and along with where it was traded and at what price and size . This can be done by using a simple select seen below  
-```q
-/Raw select-
-q)select last sym,last time,last date,last exch,last side,last tp,last ts from trade where date=2019.05.08,sym=`ETH_USD,time<2019.05.08D12:00:00.000000000
-sym     time                          date       exch   side tp      ts
-----------------------------------------------------------------------------
-ETH_USD 2019.05.08D11:59:56.631496000 2019.05.08 HITBTC sell 171.238 21.2405
-```
-
-### Using Asof joins
-A useful tool for calculating the above is using an asof join.  
-```q
-/AJ-
-q)t:([] sym:enlist `ETH_USD;time:enlist 2019.05.08D12:00:00.000000000)
-q)t
-sym     time
--------------------------------------
-ETH_USD 2019.05.08D12:00:00.000000000
-q)aj[`sym`time;t;select from trade where date=2019.05.08]
-sym     time                          date       exch   side ts      tp
-----------------------------------------------------------------------------
-ETH_USD 2019.05.08D12:00:00.000000000 2019.05.08 HITBTC sell 21.2405 171.238
-```
-
-### Binned price
-You can leverage this further when requesting trades executed at a particular time.  Below is a function the can be used to generate bins between a particular start and end time for whatever size is needed. A sample table is created below using  ETH_USD for the sym with the specified bins.
-```q  
-q)getBins  
-{[st;et;binSize]  
-	binS:16h$`second$binSize;  
-	tSpan:et-st;  
-	numBins:ceiling tSpan%binS;  
-	st+binS*til numBins}  
-
-q)getBins[2019.05.08D12:00:00.000000000;2019.05.08D12:10:00.000000000;60]
-2019.05.08D12:00:00.000000000 
-2019.05.08D12:01:00.000000000 
-2019.05.08D12:02:00.000000000 
-2019.05.08D12:03:00.000000000
-...
-
-q)bins:getBins[2019.05.08D12:00:00.000000000;2019.05.08D12:10:00.000000000;60]
-q)tab:(([]sym:(),`ETH_USD) cross ([]time:bins))
-q)tab
-sym     time
--------------------------------------
-ETH_USD 2019.05.08D12:00:00.000000000
-ETH_USD 2019.05.08D12:01:00.000000000
-ETH_USD 2019.05.08D12:02:00.000000000
-...
-q)aj[`sym`time;tab;select from trade where date=2019.05.08]
-sym     time                          date       exch     side ts         tp
----------------------------------------------------------------------------------
-ETH_USD 2019.05.08D12:00:00.000000000 2019.05.08 HITBTC   sell 21.2405    171.238
-ETH_USD 2019.05.08D12:01:00.000000000 2019.05.08 KRAKEN   buy  4.969261   168.83
-ETH_USD 2019.05.08D12:02:00.000000000 2019.05.08 BITFINEX sell 1.199      177.68
-ETH_USD 2019.05.08D12:03:00.000000000 2019.05.08 HITBTC   buy  0.0039     171.5
-...
-```
-### Using bin to return stats  
-You can use bin to returned binned stats. Bin uses binary search.
-```q
-q)select sym,date,last exch,last tp,last ts by sym,date,bins bins bin time from trade where date=2019.05.08,time within (first bins;last bins),sym=`ETH_USD
-sym     date       time                         | exch     tp      ts
-------------------------------------------------| ---------------------------
-ETH_USD 2019.05.08 2019.05.08D12:00:00.000000000| KRAKEN   168.83  4.969261
-ETH_USD 2019.05.08 2019.05.08D12:01:00.000000000| BITFINEX 177.68  1.199
-ETH_USD 2019.05.08 2019.05.08D12:02:00.000000000| HITBTC   171.5   0.0039
-ETH_USD 2019.05.08 2019.05.08D12:03:00.000000000| HITBTC   171.589 0.0229
-...
-q)select sym,date,last exch,avgPr:avg tp,vwap:wavg[ts;tp],vol:sum ts by sym,date,bins bins bin time from trade where date=2019.05.08,time within (first bins;last bins),sym=`ETH_USD
-sym     date       time                         | exch     avgPr    vwap     vol
-------------------------------------------------| -----------------------------------
-ETH_USD 2019.05.08 2019.05.08D12:00:00.000000000| KRAKEN   172.5252 170.6567 179.1426
-ETH_USD 2019.05.08 2019.05.08D12:01:00.000000000| BITFINEX 172.6061 171.0637 50.10987
-ETH_USD 2019.05.08 2019.05.08D12:02:00.000000000| HITBTC   171.8744 172.4022 95.00255
-...
-/fucntional execution
-?[trade;((=;`date;2019.05.08);(within;`time;(first;last)@\:bins);(=;`sym;enlist `ETH_USD));`sym`time!(`sym;(`bins;(bin;`bins;`time)));5#tradeFuncs]
-sym     time                         | lowPr  highPr   tcnt avgPr    vwap
--------------------------------------| --------------------------------------
-ETH_USD 2019.05.08D12:00:00.000000000| 168.75 177.65   27   172.5252 170.6567
-ETH_USD 2019.05.08D12:01:00.000000000| 168.76 177.68   25   172.6061 171.0637
-ETH_USD 2019.05.08D12:02:00.000000000| 168.85 177.7915 45   171.8744 172.4022
-...
-```
-  
- ## fby
-Another useful tool  used when completing analysis is the fby.
- ```q
- q)select from trade where date=2019.05.08,(`hh$time) within (12;13),sym=`ETH_USD,tp=(min;tp) fby sym
-date       sym     time                          exch   side ts       tp
-----------------------------------------------------------------------------
-2019.05.08 ETH_USD 2019.05.08D13:19:27.741667000 KRAKEN sell 6.794449 167.77
-2019.05.08 ETH_USD 2019.05.08D13:19:27.742228000 KRAKEN sell 41.16946 167.77
-2019.05.08 ETH_USD 2019.05.08D13:19:43.173131000 KRAKEN sell 22       167.77
-
-q)select vol:sum ts,first tp by sym,exch from trade where date=2019.05.08,(`hh$time) within (12;13),sym=`ETH_USD,tp=(min;tp) fby ([] sym;exch)
-sym     exch    | vol      tp
-----------------| ----------------
-ETH_USD BITFINEX| 210.7004 176.3
-ETH_USD COINBASE| 2.029625 167.87
-ETH_USD HITBTC  | 9.1408   170.192
-ETH_USD KRAKEN  | 69.96391 167.77
- ```
-
 # Technical Analysis
 Trend/technical traders use a combination of patterns and indicators from price charts to help them make financial decisions. Technical traders analyze price charts to develop theories about what direction the market is likely to move.
 
