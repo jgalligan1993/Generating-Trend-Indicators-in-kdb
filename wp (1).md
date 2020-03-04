@@ -66,7 +66,7 @@ Trend/technical traders use a combination of patterns and indicators from price 
  
 .center[
 ![Kraken Candle][krakenCandleStick]
-.caption[**Fig. 2:** The minimum dominating set of a graph*]]
+.caption[**Fig. 2:** The minimum dominating set of a graph]]
 
 Each candle shows the high/open/close/low and if closed higher than the open. This can be useful in predicting short term price movements.
 
