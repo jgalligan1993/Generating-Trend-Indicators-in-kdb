@@ -62,7 +62,7 @@ Trend/technical traders use a combination of patterns and indicators from price 
     candlestick[update gain: close > open from select from wpData where sym=`BTC_USD,exch=`KRAKEN]
  ```
 
-![Kraken Candle][krakenCandleStick]
+![Kraken Candle caption "Test"][krakenCandleStick]
 
 Each candle shows the high/open/close/low and if closed higher than the open. This can be useful in predicting short term price movements.
 
