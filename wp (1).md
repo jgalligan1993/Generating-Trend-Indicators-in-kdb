@@ -34,7 +34,7 @@ A Python API was created which connected to a kdb+ tickerplant. The tickerplant 
 * [Query Routing: A kdb+ framework for a scalable, load balanced system](https://code.kx.com/v2/wp/query-routing/)  
   
 # Technical Analysis
-Trend/technical traders use a combination of patterns and indicators from price charts to help them make financial decisions. Technical traders analyze price charts to develop theories about what direction the market is likely to move.
+Trend/technical traders use a combination of patterns and indicators from price charts to help them make financial decisions. Technical traders analyse price charts to develop theories about what direction the market is likely to move.
 
 ## Pattern Recognition 
  A common chart used in trying to identify patterns in, say , open/high/low/close the Candlestick as illustrated below.
@@ -66,16 +66,17 @@ Trend/technical traders use a combination of patterns and indicators from price 
 ![Kraken Candle][krakenCandleStick]
 
 Each candle shows the high/open/close/low and if closed higher than the open. This can be useful in predicting short term price movements.
+
 ## SMA-Simple Moving Averages- comparing different ranges 
 The price of a security can be extremely volatile and large price movements can make it hard to pinpoint the general trend. Moving averages "smooth" price data by creating a single flowing line. The line represents the average price over a period of time. Which moving average the trader decides to use is determined by the time frame in which he or she trades. 
 
-There are two commonly used moving averages: Simple Moving Average(SMA) and Exponential Moving Average(EMA). EMA gives a larger weighting to more recent prices when calculation the average. Below You can see the 5-Day moving average,10-Day moving average along with the close price.
+There are two commonly used moving averages: Simple Moving Average(SMA) and Exponential Moving Average(EMA). EMA gives a larger weighting to more recent prices when calculating the average. Below you can see the 5-Day moving average,10-Day moving average along with the close price.
 
-Traders analyze where the current trade price lies in relation to the moving averages. If the current trade price is  above the MA(moving average) line this would indicate over bought(decline expected), trade price below MA would indicate over sold(increase may be seen).
+Traders analyse where the current trade price lies in relation to the moving averages. If the current trade price is  above the MA (moving average) line this would indicate over-bought (decline in price expected), trade price below MA would indicate over-sold (increase in pricemay be seen).
 
-It should be noted that a signal/trend indicator would not determine a trading strategy but would be analysed in conjustion with other factors. 
+It should be noted that a signal/trend indicator would not determine a trading strategy but would be analysed in conjunction with other factors. 
 
-The graph below was used using Kx Analyst. A sample for this code can be seen below. I wont be showing all graphing code but all Analyst code can be found **here**.
+The graph below was used using Kx Analyst. A sample for this code can be seen below. All graphics of grammer code can be found in the git repository for this project. The following is a example:
 ```q
 sma:{[x]
     .qp.go[700;300]
@@ -99,6 +100,7 @@ sma:{[x]
   sma[update sma10:mavg[10;close],sma20:mavg[20;close] from select from wpData where sym=`BTC_USD,exch=`KRAKEN]
 ```
 ![Kraken sma BTC][sma]
+
 ## MACD - Moving Average Convergence Divergence  
 Moving Average Convergence Divergence(MACD) is an important and popular analysis tool. It is a trend indicator that shows the relationship between two moving averages of a securities price. MACD is calculated by subtracting the long term EMA(26 periods) from the short term EMA(12 periods).  EMAs place greater weight and significance on the more recent data points and reacts more significantly to price movements than SMA. The 9-day moving average of the MACD  is also calculated and plotted. This line is known as the signal line and can used to identify buy and sell signals.  
 The code for calculating the MACD is very simple an leverages kdb/q's built in function of ema.
