@@ -37,7 +37,32 @@ A Python API was created which connected to a kdb+ tickerplant. The tickerplant 
 Trend/technical traders use a combination of patterns and indicators from price charts to help them make financial decisions. Technical traders analyze price charts to develop theories about what direction the market is likely to move.
 
 ## Pattern Recognition 
- A common chart used in trying to identify patterns in, say , open/high/low/close the Candlestick as illustrated below. 
+ A common chart used in trying to identify patterns in, say , open/high/low/close the Candlestick as illustrated below.
+ ```q
+ candlestick : {
+    fillscale : .gg.scale.colour.cat 01b!(.gg.colour.Red; .gg.colour.Green);
+    
+    .qp.theme[enlist[`legend_use]!enlist 0b]
+    .qp.stack (
+        // open/close
+       .qp.interval[x; `date; `open; `close]
+            .qp.s.aes[`fill; `gain]
+            , .qp.s.scale[`fill; fillscale]
+            ,.qp.s.labels[`x`y!("Date";"Price")]
+            , .qp.s.geom[`gap`colour!(0; .gg.colour.White)];
+        // low/high
+        .qp.segment[x; `date; `high; `date; `low]
+            .qp.s.aes[`fill; `gain]
+            , .qp.s.scale[`fill; fillscale]
+            ,.qp.s.labels[`x`y!("Date";"Price")]
+            , .qp.s.geom[enlist [`size]!enlist 1])
+    };
+
+.qp.go[700;300]
+    .qp.theme[.gg.theme.clean]
+    .qp.title["Candlestick chart BTC"]
+    candlestick[update gain: close > open from select from wpData where sym=`BTC_USD,exch=`KRAKEN]
+ ```
 ![Kraken Candle][krakenCandleStick]
 
 Each candle shows the high/open/close/low and if closed higher than the open. This can be useful in predicting short term price movements.
