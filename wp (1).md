@@ -64,7 +64,7 @@ Trend/technical traders use a combination of patterns and indicators from price 
     candlestick[update gain: close > open from select from wpData where sym=`BTC_USD,exch=`KRAKEN]
  ```
 ![Kraken Candle][krakenCandleStick]
-
+![candle 2][candle2]
 Each candle shows the high/open/close/low and if closed higher than the open. This can be useful in predicting short term price movements.
 ## SMA-Simple Moving Averages- comparing different ranges 
 The price of a security can be extremely volatile and large price movements can make it hard to pinpoint the general trend. Moving averages "smooth" price data by creating a single flowing line. The line represents the average price over a period of time. Which moving average the trader decides to use is determined by the time frame in which he or she trades. 
@@ -355,6 +355,7 @@ The  [money flow index](https://www.investopedia.com/terms/m/mfi.asp)  (MFI), li
 [stochastic]: https://drive.google.com/uc?id=1uTEQtKAu_wljnAswYXGQOVR_s_FxhSTW
 [cci]: https://drive.google.com/uc?id=1_9GoEFLLzGo3zHFqRSNczVN8S5ReqJAy
 [aroon]:https://drive.google.com/uc?id=1B6XRtmXJwwt-eEMYDNP8k11yQltm7szs
+[candle2]:https://drive.google.com/open?id=1BQjcd4ijPdsQ7NuRkt1d22JPcYhAoG42 
 
 
 > Written with [StackEdit](https://stackedit.io/).
