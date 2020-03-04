@@ -22,9 +22,7 @@ Data was captured in a similar process to the one used in Eduard Silantyev's blo
 2. HitBtc  
 3. Kraken  
 4. Coinbase  
-  
-  
-  
+    
 which span across May,June and July 2019. There is just over 2 months of data.  
   
 A Python API was created which connected to a kdb+ tickerplant. The tickerplant processed the messages and sent them to RDB which was written down to a HDB at the end of the day. Such details will not be elaborated on as the main focus of this whitepaper is on Simple Statistics and Trend Indicators. Please view the following resources for help with tick capture:  
@@ -63,10 +61,8 @@ Trend/technical traders use a combination of patterns and indicators from price 
     .qp.title["Candlestick chart BTC"]
     candlestick[update gain: close > open from select from wpData where sym=`BTC_USD,exch=`KRAKEN]
  ```
- 
-.center[
-![Kraken Candle][krakenCandleStick]
-.caption[**Fig. 2:** The minimum dominating set of a graph]]
+
+![Kraken Candle][krakenCandleStick "caption"]
 
 Each candle shows the high/open/close/low and if closed higher than the open. This can be useful in predicting short term price movements.
 
