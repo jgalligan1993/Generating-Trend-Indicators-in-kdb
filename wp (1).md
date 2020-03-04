@@ -63,8 +63,9 @@ Trend/technical traders use a combination of patterns and indicators from price 
     .qp.title["Candlestick chart BTC"]
     candlestick[update gain: close > open from select from wpData where sym=`BTC_USD,exch=`KRAKEN]
  ```
+ 
 ![Kraken Candle][krakenCandleStick]
-
+*Fig. 2: The minimum dominating set of a graph*
 Each candle shows the high/open/close/low and if closed higher than the open. This can be useful in predicting short term price movements.
 
 ## SMA-Simple Moving Averages- comparing different ranges 
