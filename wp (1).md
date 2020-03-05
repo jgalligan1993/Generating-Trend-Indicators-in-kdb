@@ -62,7 +62,7 @@ Trend/technical traders use a combination of patterns and indicators from price 
     candlestick[update gain: close > open from select from wpData where sym=`BTC_USD,exch=`KRAKEN]
  ```
 
-![Kraken Candle caption "Test"][krakenCandleStick]
+![Kraken Candle][krakenCandleStick]
 
 Each candle shows the high/open/close/low and if closed higher than the open. This can be useful in predicting short term price movements.
 
@@ -157,7 +157,9 @@ rsiMain:{[close;n]
 It is useful to use both  RSI and MACD together as both measure momentum in a market, but, because they measure different factors, they sometimes give contrary indications. Using both together can provide a clearer picture of the market. RSI could be showing a reading of greater than 70, this would indicate that the the security is overbought, but the MACD is signaling that the market is continuing in the upward direction. 
 
 ## MFI - Money Flow Index  
+
 ![RSI ETH HITBTC][mfi]
+
 Money Flow Index (MFI) is a technical oscillator that is similar to RSI but instead uses price and volume for identifying overbought and oversold conditions. This indicator weighs in on volume and not just price to give it relative score. A low volume with a large price movement will have less impact on the relative score compared to a high volume move with a lower price move. You see new highs/lows,large price swings but is there any volume behind the move or is it just small trade. The market will generally correct itself. It can be used to spot divergences that warn traders of a change in trend. MFI is known as the volume-weighted RSI.  We leverage the relativeStrength function used in the RSI calculation below.
 ```q
 mfiMain:{[h;l;c;n;v]
@@ -169,7 +171,8 @@ mfiMain:{[h;l;c;n;v]
 		mfi}
 ```
  Below is the comparison between MFI graph and the RSI graph:
- ![MFI vs RSI][rsiVsMfi]
+
+![MFI vs RSI][rsiVsMfi]
 
 It can be useful to use both RSI and MFI together to make sure there is volume behind the price move and not just a price jump.
 ## CCI - Commodity channel index  
@@ -197,10 +200,13 @@ CCI:{[high;low;close;ndays]
     reciprocal[0.015*mad]*TP-sma  
     }
 ```
+
 ![CCI Graph][cci]
 
 ## Bollinger Bands 
+
 ![Bollingard bands][bollingard] 
+
 Bollinger Bands are used in technical analysis for pattern recognition. They are formed by plotting two lines that are two standard deviations from the simple moving average price, (one in the negative direction and one positive). Standard deviation is a measure of volatility in an asset, so when the market becomes more volatile the bands widen. Similarly, less volatility leads to the bands contracting. If the prices move towards the upper band the security is seen to be overbought and as the prices get close to the lower bound the security is considered oversold. This provides traders with information regarding price volatility. 90% of price action occurs between the bands. A breakout from this would be seen as a major event. The breakout is not considered a trading signal. Breakouts provide no clue as to the direction and extent of future price movements.
 ```q
 /tab-input table
@@ -259,6 +265,7 @@ emv:{[h;l;v;s;n]
 		}
 ```
 ![emv][emv]
+
 ## ROC - Rate of Change
   The Rate of Change (ROC) indicator measures the percentage change in the close price over a specific period of time. 
   $$ROC = \frac{Close - Close n days ago}{Close n days ago} *100$$
@@ -274,10 +281,13 @@ roc:{[c;n]
 		}
 ```
 A positive move in the ROC indicates that there was a sharp price advance.This can be seen on the graph between the 8th and 22nd of June. A downward drop indicates steep decline in the price. This oscillator is prone to whipsaw around the zero line as can be seen in the graph. For the graph  below n=9 is used, which is commonly used by short term traders. 
+
 ![roc][roc]
 
-## Stochastic Oscillator  
+## Stochastic Oscillator 
+
 ![stochastic][stochastic]
+
 The stochastic Oscillator is a momentum indicator comparing a particular closing price of a security to a range of its prices over a certain period of time. You can adjust the sensitivity of the indicator by adjusting the time period and by taking the moving average of the result. The indicator has a 0-100 range that can be used to indicate overbought and oversold signals. A security is considered over overbought when greater than 80 and oversold when less than 20. For this case n will be 14(14 days). It is calculated using the following :
 $$ \%K = \frac{C-L(n)}{H(n)-L(n)} $$  
 where C=Current Close,
@@ -320,7 +330,9 @@ Both of these technical indicators are oscillators, but they are calculated quit
 Aroon Indicator is a technical indicator which is used to identify trend changes in the price of a security and the strength of that trend which is used in the Aroon oscillator . An Aroon Indicator has two parts: aroonUp and aroonDown which measure the time between highs and lows respectively over a period of time n (generally n=25days). The objective of the indicator is that strong uptrends will regularly see new highs and strong downtrends will regularly see new lows. The range of the indicator is between 0-100.
 $$ aroonUp=\frac{n-periodsSinceNPeriodHigh}{n}*100$$
  $$ aroonDown=\frac{n-periodsSinceNPeriodLow}{n}*100$$
+
 ![aroon][aroon]
+
 ```q
 //Aroon indicator
 aroonFunc:{[c;n;f] 
