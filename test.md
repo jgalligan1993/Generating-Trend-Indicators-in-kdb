@@ -4,3 +4,9 @@
 /[krakenCandleStick]: https://drive.google.com/uc?id=1BQjcd4ijPdsQ7NuRkt1d22JPcYhAoG42
 
 ![test](https://drive.google.com/uc?id=1BQjcd4ijPdsQ7NuRkt1d22JPcYhAoG42) .center[*My caption*]
+
+
+<p>
+    <img src="https://drive.google.com/uc?id=1BQjcd4ijPdsQ7NuRkt1d22JPcYhAoG42" alt>
+    <em>image_caption</em>
+</p>
