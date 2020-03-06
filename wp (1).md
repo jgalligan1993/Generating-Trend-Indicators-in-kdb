@@ -304,7 +304,7 @@ A positive move in the ROC indicates that there was a sharp price advance. This 
 
 |![roc][roc]|
 |:--:|
-|* Figure 11: Rate of change for Bitcoin using Kraken data*|
+|*Figure 11: Rate of change for Bitcoin using Kraken data*|
 
 ## Stochastic Oscillator 
 
