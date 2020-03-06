@@ -62,20 +62,22 @@ Trend/technical traders use a combination of patterns and indicators from price 
     candlestick[update gain: close > open from select from wpData where sym=`BTC_USD,exch=`KRAKEN]
  ```
 
-![Kraken Candle][krakenCandleStick]
+|![Kraken Candle][krakenCandleStick]|
+|:--:|
+|*Figure 1: Bitcoin Candlestick Chart using Kraken data*|
 
 Each candle shows the high/open/close/low and if closed higher than the open. This can be useful in predicting short term price movements.
 
 ## SMA-Simple Moving Averages- comparing different ranges 
 The price of a security can be extremely volatile and large price movements can make it hard to pinpoint the general trend. Moving averages "smooth" price data by creating a single flowing line. The line represents the average price over a period of time. Which moving average the trader decides to use is determined by the time frame in which he or she trades. 
 
-There are two commonly used moving averages: Simple Moving Average(SMA) and Exponential Moving Average(EMA). EMA gives a larger weighting to more recent prices when calculating the average. Below you can see the 5-Day moving average,10-Day moving average along with the close price.
+There are two commonly used moving averages: Simple Moving Average(SMA) and Exponential Moving Average(EMA). EMA gives a larger weighting to more recent prices when calculating the average. In Figure 2 you can see the 10-Day moving average,20-Day moving average along with the close price.
 
-Traders analyse where the current trade price lies in relation to the moving averages. If the current trade price is  above the MA (moving average) line this would indicate over-bought (decline in price expected), trade price below MA would indicate over-sold (increase in pricemay be seen).
+Traders analyse where the current trade price lies in relation to the moving averages. If the current trade price is  above the MA (moving average) line this would indicate over-bought (decline in price expected), trade price below MA would indicate over-sold (increase in price may be seen).
 
 It should be noted that a signal/trend indicator would not determine a trading strategy but would be analysed in conjunction with other factors. 
 
-The graph below was used using Kx Analyst. A sample for this code can be seen below. All graphics of grammer code can be found in the git repository for this project. The following is a example:
+The graph in Figure 2 was created using Kx Analyst. A sample for this code can be seen below. All graphics of grammer code can be found in the git repository for this project. The following is a example:
 ```q
 sma:{[x]
     .qp.go[700;300]
@@ -98,10 +100,12 @@ sma:{[x]
   
   sma[update sma10:mavg[10;close],sma20:mavg[20;close] from select from wpData where sym=`BTC_USD,exch=`KRAKEN]
 ```
-![Kraken sma BTC][sma]
+|![Kraken sma BTC][sma]|
+|:--:|
+|*Figure 2: 10 and 20 day Simple Moving Averages for Bitcoin*|
 
 ## MACD - Moving Average Convergence Divergence  
-Moving Average Convergence Divergence (MACD) is an important and popular analysis tool. It is a trend indicator that shows the relationship between two moving averages of a securities price. MACD is calculated by subtracting the long term EMA (26 periods) from the short term EMA (12 periods). In General period is class as a day but shorter/longer time spans can be used. Throughout this paper we will consider a period to be one day. EMAs place greater weight and significance on the more recent data points and react more significantly to price movements than SMA. The 9-day moving average of the MACD is also calculated and plotted. This line is known as the signal line and can be used to identify buy and sell signals.  
+Moving Average Convergence Divergence (MACD) is an important and popular analysis tool. It is a trend indicator that shows the relationship between two moving averages of a securities price. MACD is calculated by subtracting the long term EMA (26 periods) from the short term EMA (12 periods). A period is generally defined as a day but shorter/longer time spans can be used. Throughout this paper we will consider a period to be one day. EMAs place greater weight and significance on the more recent data points and react more significantly to price movements than SMA. The 9-day moving average of the MACD is also calculated and plotted. This line is known as the signal line and can be used to identify buy and sell signals.  
 The code for calculating the MACD is very simple and leverages kdb/q's built in function of ema.
 ```q
 /tab-table input
@@ -115,15 +119,19 @@ macd:{[tab;id;ex]
         update signal:signal[macd] from res
         }
 ``` 
-Below is a graph of the MACD for ETH_USD on HITBTC. 
-![MACD ETH HITBT][macd]
+Figure 3 graphs the MACD for ETH_USD using data from HITBTC. 
+|![MACD ETH HITBT][macd]|
+|:--:|
+|*Figure 3: Moving Average Convergence Divergence for Ethereum using HITBTC data*|
 
 From the above graph, you can see how the close price interacts with the short and long EMA and how this then impacts the MACD and signal line relationship. There is a buy signal when the MACD line crosses over the signal line and there is a short signal when the MACD line crosses below the signal line.  
 
 ## RSI - Relative Strength Index  
-![RSI ETH HITBTC][rsi]
+|![RSI ETH HITBTC][rsi]|
+|:--:|
+|*Figure 4: Relative Strength Index for Ethereum using HITBTC data*|
 
-Relative Strength Index (RSA) is a momentum oscillator that measures the speed and change of price movements. It oscillates between 0-100. It is said that security is overbought when above 70 and oversold when below 30. It is a general trend and momentum indicator. The default period is 14 days. This can be reduced or increased - the shorter the period the more sensitive it is to price changes. Short term traders sometimes look at 2 day RSIs to look for overbought readings above 80 and over sold ratings below 20.  
+Relative Strength Index (RSI) is a momentum oscillator that measures the speed and change of price movements. It oscillates between 0-100. It is said that security is overbought when above 70 and oversold when below 30. It is a general trend and momentum indicator. The default period is 14 days. This can be reduced or increased - the shorter the period the more sensitive it is to price changes. Short term traders sometimes look at 2 day RSIs to look for overbought readings above 80 and over sold ratings below 20.  
 
 The calculation For RSI is as follows:
 $$ RSI=100 - \frac{100}{1+RS}$$
@@ -158,7 +166,9 @@ It is useful to use both  RSI and MACD together as both measure momentum in a ma
 
 ## MFI - Money Flow Index  
 
-![RSI ETH HITBTC][mfi]
+|![MFI ETH HITBTC][mfi]|
+|:--:|
+|*Figure 5: Money flow Index for Ethereum where n=14*|
 
 Money Flow Index (MFI) is a technical oscillator that is similar to RSI but instead uses price and volume for identifying overbought and oversold conditions. This indicator weighs in on volume and not just price to give it relative score. A low volume with a large price movement will have less impact on the relative score compared to a high volume move with a lower price move. You see new highs/lows,large price swings but is there any volume behind the move or is it just small trade. The market will generally correct itself. It can be used to spot divergences that warn traders of a change in trend. MFI is known as the volume-weighted RSI.  We leverage the relativeStrength function used in the RSI calculation below.
 ```q
@@ -170,9 +180,11 @@ mfiMain:{[h;l;c;n;v]
 		mfi:100*mf%(1+mf); /money flow as a percentage
 		mfi}
 ```
- Below is the comparison between MFI graph and the RSI graph:
+ Figure 6 shows the comparison between MFI graph and the RSI graph:
 
-![MFI vs RSI][rsiVsMfi]
+|![MFI vs RSI][rsiVsMfi]|
+|:--:|
+|*Figure 6: MFI versus RSI*|
 
 It can be useful to use both RSI and MFI together to make sure there is volume behind the price move and not just a price jump.
 ## CCI - Commodity channel index  
@@ -184,7 +196,7 @@ CCI calculation:
 $$CCI= \frac{Typical Price- Moving Average}{.015 * Mean Deviation}$$
 $$Typical Price= \frac {high+low+close}{3} $$
 
-In order to calculate the Mean Deviation it was necessary to create a helper function called madFunc(moving average Deviation)
+In order to calculate the Mean Deviation it was necessary to create a helper function called maDev(moving average Deviation)
 ```q
 maDev:{[tp;ma;n] 
 		((n-1)#0Nf),{[x;y;z;num] reciprocal[num]*sum abs z _y#x}'[(n-1)_tp-/:ma;n+l;l:til -[count tp;n-1];n]}
@@ -201,11 +213,15 @@ CCI:{[high;low;close;ndays]
     }
 ```
 
-![CCI Graph][cci]
+|![CCI Graph][cci]|
+|:--:|
+|*Figure 7: Commocity Channel Index and close proce for Bitcion using Kraken data*|
 
 ## Bollinger Bands 
 
-![Bollingard bands][bollingard] 
+|![Bollingard bands][bollingard] |
+|:--:|
+| * Figure 8: Bollonger Bands for Bitcoin using KRaken data and n=20 * | 
 
 Bollinger Bands are used in technical analysis for pattern recognition. They are formed by plotting two lines that are two standard deviations from the simple moving average price, (one in the negative direction and one positive). Standard deviation is a measure of volatility in an asset, so when the market becomes more volatile the bands widen. Similarly, less volatility leads to the bands contracting. If the prices move towards the upper band the security is seen to be overbought and as the prices get close to the lower bound the security is considered oversold. This provides traders with information regarding price volatility. 90% of price action occurs between the bands. A breakout from this would be seen as a major event. The breakout is not considered a trading signal. Breakouts provide no clue as to the direction and extent of future price movements.
 ```q
@@ -223,7 +239,9 @@ bollB[wpData;20;`KRAKEN;`BTC_USD]
 ## Force Index  
 The Force Index is a technical indicator that measures the amount of power behind a price move. It uses price and volume to assess the force behind a move or a possible turning point. The technical indicator is an unbounded oscillator that oscillates between a negative and positive value.  There are three essential elements to stock price movement-direction, extent and volume. The Force Index combines all three in this oscillator.
 
-![Force Index Graph][forceIndex]
+|![Force Index Graph][forceIndex]|
+|:--:|
+|* Figure 9: Force Index and Close Price for Bitcoin using Kraken data * |
 
 The above graph is the 13-day EMA of the Force Index. It can be seen that the Force Index crosses the centre line the price begins to increase. This would indicate that bullish trading  is exerting a greater force. However, this changes towards the end of July where there is a significant change from a high positive force index to a negative one and the price drops dramatically. It suggests the emergence of a bear market.
  
@@ -264,7 +282,9 @@ emv:{[h;l;v;s;n]
 		(n#0nf),n _mavg[n;distMoved%boxRatio]
 		}
 ```
-![emv][emv]
+|![emv][emv]|
+|:--:|
+|* Figure 10: Ease of Movement ,Close and Volume for Ethereum using Kraken Data * |
 
 ## ROC - Rate of Change
   The Rate of Change (ROC) indicator measures the percentage change in the close price over a specific period of time. 
@@ -280,13 +300,17 @@ roc:{[c;n]
 		(n#0nf),100*reciprocal[prevP]*curP-prevP
 		}
 ```
-A positive move in the ROC indicates that there was a sharp price advance.This can be seen on the graph between the 8th and 22nd of June. A downward drop indicates steep decline in the price. This oscillator is prone to whipsaw around the zero line as can be seen in the graph. For the graph  below n=9 is used, which is commonly used by short term traders. 
+A positive move in the ROC indicates that there was a sharp price advance. This can be seen on the graph in Figure 11 between the 8th and 22nd of June. A downward drop indicates steep decline in the price. This oscillator is prone to whipsaw around the zero line as can be seen in the graph. For the graph  below n=9 is used, which is commonly used by short term traders. 
 
-![roc][roc]
+|![roc][roc]|
+|:--:|
+|* Figure 11: Rate of change for Bitcoin using Kraken data*|
 
 ## Stochastic Oscillator 
 
-![stochastic][stochastic]
+|![stochastic][stochastic]|
+|:--:|
+|*Figure 12: Stochastic Oscillator with smoothing %K=1,%D=3 for itcoin using Kraken data*|
 
 The stochastic Oscillator is a momentum indicator comparing a particular closing price of a security to a range of its prices over a certain period of time. You can adjust the sensitivity of the indicator by adjusting the time period and by taking the moving average of the result. The indicator has a 0-100 range that can be used to indicate overbought and oversold signals. A security is considered over overbought when greater than 80 and oversold when less than 20. For this case n will be 14(14 days). It is calculated using the following :
 $$ \%K = \frac{C-L(n)}{H(n)-L(n)} $$  
@@ -331,7 +355,10 @@ Aroon Indicator is a technical indicator which is used to identify trend changes
 $$ aroonUp=\frac{n-periodsSinceNPeriodHigh}{n}*100$$
  $$ aroonDown=\frac{n-periodsSinceNPeriodLow}{n}*100$$
 
-![aroon][aroon]
+
+|![aroon][aroon]|
+|:--:|
+| * Figure 13: Aroon Oscillator and Aroon Inicator * |
 
 ```q
 //Aroon indicator
