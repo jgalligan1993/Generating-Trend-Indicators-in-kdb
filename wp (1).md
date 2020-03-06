@@ -221,7 +221,7 @@ CCI:{[high;low;close;ndays]
 
 |![Bollingard bands][bollingard] |
 |:--:|
-| * Figure 8: Bollonger Bands for Bitcoin using KRaken data and n=20 * | 
+| *Figure 8: Bollonger Bands for Bitcoin using KRaken data and n=20* | 
 
 Bollinger Bands are used in technical analysis for pattern recognition. They are formed by plotting two lines that are two standard deviations from the simple moving average price, (one in the negative direction and one positive). Standard deviation is a measure of volatility in an asset, so when the market becomes more volatile the bands widen. Similarly, less volatility leads to the bands contracting. If the prices move towards the upper band the security is seen to be overbought and as the prices get close to the lower bound the security is considered oversold. This provides traders with information regarding price volatility. 90% of price action occurs between the bands. A breakout from this would be seen as a major event. The breakout is not considered a trading signal. Breakouts provide no clue as to the direction and extent of future price movements.
 ```q
@@ -241,7 +241,7 @@ The Force Index is a technical indicator that measures the amount of power behin
 
 |![Force Index Graph][forceIndex]|
 |:--:|
-|* Figure 9: Force Index and Close Price for Bitcoin using Kraken data * |
+|*Figure 9: Force Index and Close Price for Bitcoin using Kraken data*|
 
 The above graph is the 13-day EMA of the Force Index. It can be seen that the Force Index crosses the centre line the price begins to increase. This would indicate that bullish trading  is exerting a greater force. However, this changes towards the end of July where there is a significant change from a high positive force index to a negative one and the price drops dramatically. It suggests the emergence of a bear market.
  
@@ -284,7 +284,7 @@ emv:{[h;l;v;s;n]
 ```
 |![emv][emv]|
 |:--:|
-|* Figure 10: Ease of Movement ,Close and Volume for Ethereum using Kraken Data * |
+|*Figure 10: Ease of Movement ,Close and Volume for Ethereum using Kraken Data*|
 
 ## ROC - Rate of Change
   The Rate of Change (ROC) indicator measures the percentage change in the close price over a specific period of time. 
@@ -358,7 +358,7 @@ $$ aroonUp=\frac{n-periodsSinceNPeriodHigh}{n}*100$$
 
 |![aroon][aroon]|
 |:--:|
-| * Figure 13: Aroon Oscillator and Aroon Inicator * |
+|*Figure 13: Aroon Oscillator and Aroon Inicator*|
 
 ```q
 //Aroon indicator
