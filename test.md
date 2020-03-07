@@ -4,28 +4,14 @@
 |figure|
 
 
-[krakenCandleStick]: https://drive.google.com/uc?id=1BQjcd4ijPdsQ7NuRkt1d22JPcYhAoG42
+Here's a simple footnote,[^1] and here's a longer one.[^bignote]
 
-![test](https://drive.google.com/uc?id=1BQjcd4ijPdsQ7NuRkt1d22JPcYhAoG42) *Fig1:*
+[^1]: This is the first footnote.
 
+[^bignote]: Here's one with multiple paragraphs and code.
 
-<p>
-    <img src="https://drive.google.com/uc?id=1BQjcd4ijPdsQ7NuRkt1d22JPcYhAoG42" alt>
-    <em>image_caption</em>
-</p>
+    Indent paragraphs to include them in the footnote.
 
+    `{ my code }`
 
-| ![test](https://drive.google.com/uc?id=1BQjcd4ijPdsQ7NuRkt1d22JPcYhAoG42) | 
-|:--:| 
-| *Space* |
-
-
-
-/| ![space-1.jpg](https://drive.google.com/uc?id=1BQjcd4ijPdsQ7NuRkt1d22JPcYhAoG42) | 
-/|:--:| 
-/| *Space* |
-
-
-/| ![space-1.jpg](http://www.storywarren.com/wp-content/uploads/2016/09/space-1.jpg) | 
-/|:--:| 
-/| *Space* |
+    Add as many paragraphs as you like.
