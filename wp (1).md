@@ -16,7 +16,7 @@ This whitepaper has 3 main parts:
 
 ## Data extraction  
   
-Data was captured in a similar process to the one used in Eduard Silantyev's blog “Combining high-frequency cryptocurrency venue data using kdb+” . Trade and Quote tick data for Ethereum(ETH) and Bitcoin(BTC) denominated in the US dollar(USD) was collected from four exchanges:  
+Data was captured in a similar process to the one used in Eduard Silantyev's blog “Combining high-frequency cryptocurrency venue data using kdb+”[^1] . Trade and Quote tick data for Ethereum(ETH) and Bitcoin(BTC) denominated in the US dollar(USD) was collected from four exchanges:  
   
 1. Bitfinex  
 2. HitBtc  
@@ -376,6 +376,9 @@ The oscillator moves above the zero line when aroonUp moves above the aroonDown.
  
 # Conclusion  
 This paper outlines how trade functions can be created quite simply using built in q functions. This aper highlights how q/kdb+ can be used for trade analytics. The functions range from using different moving averages to more complex trend indicators and oscillator.
+
+[^1]: https://kx.com/blog/combining-high-frequency-cryptocurrency-venue-data-using-kdb/
+
 # Notes  
 Ask price-(ap) is the price sellers are willing to sell at so if you want to buy on the market you will get the current ap. Bid price -(bp) is the price buyers are willing to buy at, so if you have your security and want to sell it you will get the current bp. In a normal market the ap>bp and the difference between the two is called the bid ask spread. Sometimes this is not the case and we enter a locked(ap=bp) or crossed(ap<bp) market.
 
