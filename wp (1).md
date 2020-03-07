@@ -9,6 +9,7 @@ The compactness of kdb+ and the terseness of q means that the language is focuse
 The code is developed on version 3.6 2019.03.07 of kdb+ . Cryptocurrency data for Bitcoin and Ethereum from multiple exchanges is used in the examples provided. Charts are displayed using Kx Analyst.  
 
 All code used in this paper is contained in the following git repository: [Generating-Trend-Indicators-in-kdb](https://github.com/jgalligan1993/Generating-Trend-Indicators-in-kdb) .
+
 This whitepaper has 3 main parts:  
   
 1. Data Extraction  
