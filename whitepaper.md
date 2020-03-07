@@ -2,8 +2,7 @@
 
 # Generating Statistics and Trend Indicators in kdb+  
   
-## Introduction  
-  
+## Introduction   
 The compactness of kdb+ and the terseness of q means that the language is focused on high performing atomic capabilities  rather than wide range in-built functions. As a result users may sometimes develop libraries of often-used algorithms and  functions relevant to their specific domains for convenience and to support reuse. In this paper, we outline examples of  commonly used functions in finance that are built on native q functions.  
   
 The code is developed on version 3.6 2019.03.07 of kdb+ . Cryptocurrency data for Bitcoin and Ethereum from multiple exchanges is used in the examples provided. Charts are displayed using Kx Analyst.  
@@ -377,9 +376,7 @@ $$ aroonOsc= aroonUp - aroonDown $$
 The oscillator moves above the zero line when aroonUp moves above the aroonDown. The oscillator drops below zero line when the aroonDown moves above the aroonDown.
  
 # Conclusion  
-This paper discusses trend indicators and oscillators that are commonly used by traders and Quants. This paper highlights how trade analytics can be implemented using kdb/q. This paper depicts how our new visualisation tool, kx for analyst, can be used to display the indicators and oscillators.
-
-This paper outlines how trade functions can be created quite simply using built in q functions. This aper highlights how q/kdb+ can be used for trade analytics. The functions range from using different moving averages to more complex trend indicators and oscillator.
+This paper illustrates how kdb/q can be used to perform trade analytics. The paper discusses commonly used trend indictors and oscillators which traders and quantitative analyst use to trigger buy/sell signals while also offering them a clearer image of the market.This paper highlights our visualisation tool, kx for analyst, and shows how easily it can be implemented to display statistics in a clear graphical manner. 
 
 [^1]: https://kx.com/blog/combining-high-frequency-cryptocurrency-venue-data-using-kdb/
 [^2]: https://www.investopedia.com/terms/m/macd.asp
