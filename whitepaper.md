@@ -26,7 +26,7 @@ Data was captured in a similar process to the one used in Eduard Silantyev's blo
     
 which span across May,June and July 2019. There is just over 2 months of data.  
   
-A Python API was created which connected to a kdb+ tickerplant. The tickerplant processed the messages and sent them to RDB which was written down to a HDB at the end of the day. Such details will not be elaborated on as the main focus of this whitepaper is on Simple Statistics and Trend Indicators. Please view the following resources for help with tick capture:  
+A python script was created which connected to exchange feeds and extracted the relevent data which was then published to a kdb+ tickerplant. The tickerplant processed the messages and sent them to RDB which was written down to a HDB at the end of the day. Such details will not be elaborated on as the main focus of this whitepaper is on Simple Statistics and Trend Indicators. Please view the following resources for help with tick capture:  
   
 * [Kdb+tick profiling for throughput optimization](https://code.kx.com/v2/wp/tick-profiling/)  
 * [Disaster-recovery planning for kdb+ tick systems](https://code.kx.com/v2/wp/disaster-recovery/)  
