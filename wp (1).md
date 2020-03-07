@@ -11,8 +11,8 @@ The code is developed on version 3.6 2019.03.07 of kdb+ . Cryptocurrency data fo
 This whitepaper has 3 main parts:  
   
 1. Data Extraction  
-2. Simple Statistics  
-3. Trend Indicators  
+2. Technical Analysis
+3. Trend analysis - Oscillators and Indicators.
 
 ## Data extraction  
   
@@ -105,7 +105,7 @@ sma:{[x]
 |*Figure 2: 10 and 20 day Simple Moving Averages for Bitcoin*|
 
 ## MACD - Moving Average Convergence Divergence  
-Moving Average Convergence Divergence (MACD) is an important and popular analysis tool. It is a trend indicator that shows the relationship between two moving averages of a securities price. MACD is calculated by subtracting the long term EMA (26 periods) from the short term EMA (12 periods). A period is generally defined as a day but shorter/longer time spans can be used. Throughout this paper we will consider a period to be one day. EMAs place greater weight and significance on the more recent data points and react more significantly to price movements than SMA. The 9-day moving average of the MACD is also calculated and plotted. This line is known as the signal line and can be used to identify buy and sell signals.  
+Moving Average Convergence Divergence (MACD) is an important and popular analysis tool. It is a trend indicator that shows the relationship between two moving averages of a securities price. MACD is calculated by subtracting the long term EMA (26 periods) from the short term EMA (12 periods). A period is generally defined as a day but shorter/longer time spans can be used. Throughout this paper we will consider a period to be one day. EMAs place greater weight and significance on the more recent data points and react more significantly to price movements than SMA. The 9-day moving average of the MACD is also calculated and plotted. This line is known as the signal line and can be used to identify buy and sell signals[^2].  
 The code for calculating the MACD is very simple and leverages kdb/q's built in function of ema.
 ```q
 /tab-table input
@@ -131,7 +131,7 @@ From the above graph, you can see how the close price interacts with the short a
 |:--:|
 |*Figure 4: Relative Strength Index for Ethereum using HITBTC data*|
 
-Relative Strength Index (RSI) is a momentum oscillator that measures the speed and change of price movements. It oscillates between 0-100. It is said that security is overbought when above 70 and oversold when below 30. It is a general trend and momentum indicator. The default period is 14 days. This can be reduced or increased - the shorter the period the more sensitive it is to price changes. Short term traders sometimes look at 2 day RSIs to look for overbought readings above 80 and over sold ratings below 20.  
+Relative Strength Index (RSI) is a momentum oscillator that measures the speed and change of price movements. It oscillates between 0-100. It is said that security is overbought when above 70 and oversold when below 30. It is a general trend and momentum indicator. The default period is 14 days. This can be reduced or increased - the shorter the period the more sensitive it is to price changes. Short term traders sometimes look at 2 day RSIs to look for overbought readings above 80 and over sold ratings below 20 [^3].  
 
 The calculation For RSI is as follows:
 $$ RSI=100 - \frac{100}{1+RS}$$
@@ -170,7 +170,7 @@ It is useful to use both  RSI and MACD together as both measure momentum in a ma
 |:--:|
 |*Figure 5: Money flow Index for Ethereum where n=14*|
 
-Money Flow Index (MFI) is a technical oscillator that is similar to RSI but instead uses price and volume for identifying overbought and oversold conditions. This indicator weighs in on volume and not just price to give it relative score. A low volume with a large price movement will have less impact on the relative score compared to a high volume move with a lower price move. You see new highs/lows,large price swings but is there any volume behind the move or is it just small trade. The market will generally correct itself. It can be used to spot divergences that warn traders of a change in trend. MFI is known as the volume-weighted RSI.  We leverage the relativeStrength function used in the RSI calculation below.
+Money Flow Index (MFI) is a technical oscillator that is similar to RSI but instead uses price and volume for identifying overbought and oversold conditions. This indicator weighs in on volume and not just price to give it relative score. A low volume with a large price movement will have less impact on the relative score compared to a high volume move with a lower price move. You see new highs/lows,large price swings but is there any volume behind the move or is it just small trade. The market will generally correct itself. It can be used to spot divergences that warn traders of a change in trend. MFI is known as the volume-weighted RSI[^4] .  We leverage the relativeStrength function used in the RSI calculation below.
 ```q
 mfiMain:{[h;l;c;n;v]
 		TP:avg(h;l;c); /typical price
@@ -190,7 +190,7 @@ It can be useful to use both RSI and MFI together to make sure there is volume b
 ## CCI - Commodity channel index  
 The Commodity Channel Index (CCI) is another tool used by technical analysts. Its primary use is for spotting new trends. It measures the current price level relative to an average price level over time. The CCI can be used for any market and is not just for commodities. It can be used to help identify if a security is approaching overbought and oversold levels. Its primary use is for spotting new trends. This can help traders make decisions on trades whether to add to position, exit position or take no part.
 
-When CCI is positive it indicates it is above historical average and when it is negative it indicates it is below historical average. Moving from negative ratings to high positive ratings can be used as a signal for a possible uptrend. Similarly, the reverse will signal downtrends. CCI has no upper or lower bound so finding out what typical overbought and oversold levels should be determined on each asset individually looking at its historical CCI levels.
+When CCI is positive it indicates it is above historical average and when it is negative it indicates it is below historical average. Moving from negative ratings to high positive ratings can be used as a signal for a possible uptrend. Similarly, the reverse will signal downtrends. CCI has no upper or lower bound so finding out what typical overbought and oversold levels should be determined on each asset individually looking at its historical CCI levels[^5].
 
 CCI calculation:
 $$CCI= \frac{Typical Price- Moving Average}{.015 * Mean Deviation}$$
@@ -223,7 +223,7 @@ CCI:{[high;low;close;ndays]
 |:--:|
 | *Figure 8: Bollonger Bands for Bitcoin using KRaken data and n=20* | 
 
-Bollinger Bands are used in technical analysis for pattern recognition. They are formed by plotting two lines that are two standard deviations from the simple moving average price, (one in the negative direction and one positive). Standard deviation is a measure of volatility in an asset, so when the market becomes more volatile the bands widen. Similarly, less volatility leads to the bands contracting. If the prices move towards the upper band the security is seen to be overbought and as the prices get close to the lower bound the security is considered oversold. This provides traders with information regarding price volatility. 90% of price action occurs between the bands. A breakout from this would be seen as a major event. The breakout is not considered a trading signal. Breakouts provide no clue as to the direction and extent of future price movements.
+Bollinger Bands are used in technical analysis for pattern recognition. They are formed by plotting two lines that are two standard deviations from the simple moving average price, (one in the negative direction and one positive)[^6] . Standard deviation is a measure of volatility in an asset, so when the market becomes more volatile the bands widen. Similarly, less volatility leads to the bands contracting. If the prices move towards the upper band the security is seen to be overbought and as the prices get close to the lower bound the security is considered oversold. This provides traders with information regarding price volatility. 90% of price action occurs between the bands. A breakout from this would be seen as a major event. The breakout is not considered a trading signal. Breakouts provide no clue as to the direction and extent of future price movements.
 ```q
 /tab-input table
 /n-number of days
@@ -237,7 +237,7 @@ bollB:{[tab;n;ex;id]
 bollB[wpData;20;`KRAKEN;`BTC_USD]	
 ```
 ## Force Index  
-The Force Index is a technical indicator that measures the amount of power behind a price move. It uses price and volume to assess the force behind a move or a possible turning point. The technical indicator is an unbounded oscillator that oscillates between a negative and positive value.  There are three essential elements to stock price movement-direction, extent and volume. The Force Index combines all three in this oscillator.
+The Force Index is a technical indicator that measures the amount of power behind a price move. It uses price and volume to assess the force behind a move or a possible turning point. The technical indicator is an unbounded oscillator that oscillates between a negative and positive value.  There are three essential elements to stock price movement-direction, extent and volume. The Force Index combines all three in this oscillator[^7].
 
 |![Force Index Graph][forceIndex]|
 |:--:|
@@ -312,7 +312,7 @@ A positive move in the ROC indicates that there was a sharp price advance. This 
 |:--:|
 |*Figure 12: Stochastic Oscillator with smoothing %K=1,%D=3 for itcoin using Kraken data*|
 
-The stochastic Oscillator is a momentum indicator comparing a particular closing price of a security to a range of its prices over a certain period of time. You can adjust the sensitivity of the indicator by adjusting the time period and by taking the moving average of the result. The indicator has a 0-100 range that can be used to indicate overbought and oversold signals. A security is considered over overbought when greater than 80 and oversold when less than 20. For this case n will be 14(14 days). It is calculated using the following :
+The stochastic Oscillator is a momentum indicator comparing a particular closing price of a security to a range of its prices over a certain period of time. You can adjust the sensitivity of the indicator by adjusting the time period and by taking the moving average of the result. The indicator has a 0-100 range that can be used to indicate overbought and oversold signals. A security is considered over overbought when greater than 80 and oversold when less than 20. For this case n will be 14(14 days) [^9] . It is calculated using the following :
 $$ \%K = \frac{C-L(n)}{H(n)-L(n)} $$  
 where C=Current Close,
 L(n)=Low across last n days,
@@ -348,7 +348,7 @@ stoOscD:{[c;h;l;n;k]
 
 ```
 ### The Difference Between the Commodity Channel Index (CCI) and the Stochastic Oscillator
-Both of these technical indicators are oscillators, but they are calculated quite differently. One of the main differences is that the  [Stochastic Oscillator](https://www.investopedia.com/terms/s/stochasticoscillator.asp)  is bound between zero and 100, while the CCI is unbounded. Due to the calculation differences, they will provide different signals at different times, such as overbought and oversold readings.
+Both of these technical indicators are oscillators, but they are calculated quite differently. One of the main differences is that the  stochastic Oscillator  is bound between zero and 100, while the CCI is unbounded. Due to the calculation differences, they will provide different signals at different times, such as overbought and oversold readings.
 
 ## Aroon Oscillator
 Aroon Indicator is a technical indicator which is used to identify trend changes in the price of a security and the strength of that trend which is used in the Aroon oscillator . An Aroon Indicator has two parts: aroonUp and aroonDown which measure the time between highs and lows respectively over a period of time n (generally n=25days). The objective of the indicator is that strong uptrends will regularly see new highs and strong downtrends will regularly see new lows. The range of the indicator is between 0-100.
@@ -375,12 +375,21 @@ $$ aroonOsc= aroonUp - aroonDown $$
 The oscillator moves above the zero line when aroonUp moves above the aroonDown. The oscillator drops below zero line when the aroonDown moves above the aroonDown.
  
 # Conclusion  
+This paper discusses trend indicators and oscillators that are commonly used by traders and Quants. This paper highlights how trade analytics can be implemented using kdb/q. This paper depicts how our new visualisation tool, kx for analyst, can be used to display the indicators and oscillators.
+
 This paper outlines how trade functions can be created quite simply using built in q functions. This aper highlights how q/kdb+ can be used for trade analytics. The functions range from using different moving averages to more complex trend indicators and oscillator.
 
-[^1]: [cryptoBlog](https://kx.com/blog/combining-high-frequency-cryptocurrency-venue-data-using-kdb/)
+[^1]: https://kx.com/blog/combining-high-frequency-cryptocurrency-venue-data-using-kdb/
+[^2]: https://www.investopedia.com/terms/m/macd.asp
+[^3]: https://school.stockcharts.com/doku.php?id=technical_indicators:relative_strength_index_rsi
+[^4]: https://school.stockcharts.com/doku.php?id=technical_indicators:money_flow_index_mfi
+[^5]: https://www.tradingview.com/wiki/Commodity_Channel_Index_(CCI)
+[^6]: https://www.investopedia.com/articles/technical/102201.asp
+[^7]: https://www.investopedia.com/terms/f/force-index.asp
+[^8]: https://therobusttrader.com/rate-of-change-indicator-roc/
+[^9]: https://www.investopedia.com/terms/s/stochasticoscillator.asp
+[^10]: https://www.investopedia.com/terms/a/aroonoscillator.asp
 
-# Notes  
-Ask price-(ap) is the price sellers are willing to sell at so if you want to buy on the market you will get the current ap. Bid price -(bp) is the price buyers are willing to buy at, so if you have your security and want to sell it you will get the current bp. In a normal market the ap>bp and the difference between the two is called the bid ask spread. Sometimes this is not the case and we enter a locked(ap=bp) or crossed(ap<bp) market.
 
 [sma]:https://drive.google.com/uc?id=1ycwHipo2eg93VBbWdsUexe9FSGbfXf5d
 [krakenCandleStick]: https://drive.google.com/uc?id=1BQjcd4ijPdsQ7NuRkt1d22JPcYhAoG42
