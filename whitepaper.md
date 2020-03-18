@@ -1,13 +1,12 @@
-﻿
-
-# Generating Statistics and Trend Indicators in kdb+  
+﻿# Generating Statistics and Trend Indicators in kdb+  
   
 ## Introduction   
-The compactness of kdb+ and the terseness of q means that the language is focused on high performing atomic capabilities  rather than wide range in-built functions. As a result users may sometimes develop libraries of often-used algorithms and  functions relevant to their specific domains for convenience and to support reuse. In this paper, we outline examples of  commonly used functions in finance that are built on native q functions.  
-  
-The code is developed on version 3.6 2019.03.07 of kdb+ . Cryptocurrency data for Bitcoin and Ethereum from multiple exchanges is used in the examples provided. Charts are displayed using Kx Analyst.  
 
-All code used in this paper is contained in the following git repository: [Generating-Trend-Indicators-in-kdb](https://github.com/jgalligan1993/Generating-Trend-Indicators-in-kdb) .
+The compactness of kdb+ and the terseness of q means that the language is focused on a small number of high-performing native built-in functions rather than extensive libraries. As a result users often develop libraries of their own often-used algorithms and functions relevant to their specific domains for convenience and to support reuse. In this paper, we outline examples of commonly used functions in finance that are built on native q functions.  
+  
+The code is developed on version 3.6 2019.03.07 of kdb+. Cryptocurrency data for Bitcoin and Ethereum from multiple exchanges is used in the examples provided. Charts are displayed using Kx Analyst.  
+
+All code used in this paper is contained in the following git repository: [Generating-Trend-Indicators-in-kdb](https://github.com/jgalligan1993/Generating-Trend-Indicators-in-kdb).
 
 This whitepaper has 3 main parts:  
   
@@ -17,14 +16,14 @@ This whitepaper has 3 main parts:
 
 ## Data extraction  
   
-Data was captured in a similar process to the one used in Eduard Silantyev's blog “Combining high-frequency cryptocurrency venue data using kdb+”[^1] . Trade and Quote tick data for Ethereum(ETH) and Bitcoin(BTC) denominated in the US dollar(USD) was collected from four exchanges:  
+Data was captured in a similar process to the one used in Eduard Silantyev's blog “Combining high-frequency cryptocurrency venue data using kdb+”[^1] . Trade and Quote tick data for Ethereum (ETH) and Bitcoin (BTC) denominated in the US dollar (USD) was collected from four exchanges:  
   
 1. Bitfinex  
 2. HitBtc  
 3. Kraken  
 4. Coinbase  
     
-which span across May,June and July 2019. There is just over 2 months of data.  
+which span across May, June and July 2019. There is just over 2 months of data.  
   
 A python script was created which connected to exchange feeds and extracted the relevent data which was then published to a kdb+ tickerplant. The tickerplant processed the messages and sent them to RDB which was written down to a HDB at the end of the day. Such details will not be elaborated on as the main focus of this whitepaper is on Simple Statistics and Trend Indicators. Please view the following resources for help with tick capture:  
   
@@ -35,7 +34,8 @@ A python script was created which connected to exchange feeds and extracted the 
 # Technical Analysis
 Trend/technical traders use a combination of patterns and indicators from price charts to help them make financial decisions. Technical traders analyse price charts to develop theories about what direction the market is likely to move.
 
-## Pattern Recognition 
+## Pattern Recognition
+ <!--FIXME: The grammar of this sentence isn't clear --> 
  A common chart used in trying to identify patterns in, say , open/high/low/close the Candlestick as illustrated below.
  ```q
  candlestick : {
@@ -46,15 +46,15 @@ Trend/technical traders use a combination of patterns and indicators from price 
         // open/close
        .qp.interval[x; `date; `open; `close]
             .qp.s.aes[`fill; `gain]
-            , .qp.s.scale[`fill; fillscale]
+            ,.qp.s.scale[`fill; fillscale]
             ,.qp.s.labels[`x`y!("Date";"Price")]
-            , .qp.s.geom[`gap`colour!(0; .gg.colour.White)];
+            ,.qp.s.geom[`gap`colour!(0; .gg.colour.White)];
         // low/high
         .qp.segment[x; `date; `high; `date; `low]
             .qp.s.aes[`fill; `gain]
-            , .qp.s.scale[`fill; fillscale]
+            ,.qp.s.scale[`fill; fillscale]
             ,.qp.s.labels[`x`y!("Date";"Price")]
-            , .qp.s.geom[enlist [`size]!enlist 1])
+            ,.qp.s.geom[enlist [`size]!enlist 1])
     };
 
 .qp.go[700;300]
@@ -63,16 +63,16 @@ Trend/technical traders use a combination of patterns and indicators from price 
     candlestick[update gain: close > open from select from wpData where sym=`BTC_USD,exch=`KRAKEN]
  ```
 
-|![Kraken Candle][krakenCandleStick]|
+|![Kraken Candle](resources/krakenCandleStick.png)|
 |:--:|
 |*Figure 1: Bitcoin Candlestick Chart using Kraken data*|
 
-Each candle shows the high/open/close/low and if closed higher than the open. This can be useful in predicting short term price movements.
+Each candle shows the high/open/close/low and if our security closed higher than the open. This can be useful in predicting short term price movements.
 
 ## SMA-Simple Moving Averages- comparing different ranges 
 The price of a security can be extremely volatile and large price movements can make it hard to pinpoint the general trend. Moving averages "smooth" price data by creating a single flowing line. The line represents the average price over a period of time. Which moving average the trader decides to use is determined by the time frame in which he or she trades. 
 
-There are two commonly used moving averages: Simple Moving Average(SMA) and Exponential Moving Average(EMA). EMA gives a larger weighting to more recent prices when calculating the average. In Figure 2 you can see the 10-Day moving average,20-Day moving average along with the close price.
+There are two commonly used moving averages: Simple Moving Average (SMA) and Exponential Moving Average (EMA). EMA gives a larger weighting to more recent prices when calculating the average. In Figure 2 you can see the 10-Day moving average and 20-Day moving average along with the close price.
 
 Traders analyse where the current trade price lies in relation to the moving averages. If the current trade price is  above the MA (moving average) line this would indicate over-bought (decline in price expected), trade price below MA would indicate over-sold (increase in price may be seen).
 
@@ -89,19 +89,19 @@ sma:{[x]
                     .qp.s.geom[enlist[`fill]!enlist .gg.colour.Blue]
                     ,.qp.s.scale [`y; .gg.scale.limits[6000 0N] .gg.scale.linear]
                     ,.qp.s.legend[""; `sma10`sma20`close!(.gg.colour.Blue;.gg.colour.Red;.gg.colour.Green)]
-                    , .qp.s.labels[`x`y!("Date";"Price")];
+                    ,.qp.s.labels[`x`y!("Date";"Price")];
                 .qp.line[x; `date; `sma20]
                     .qp.s.geom[enlist[`fill]!enlist .gg.colour.Red]
                     ,.qp.s.scale [`y; .gg.scale.limits[6000 0N] .gg.scale.linear]
-                    , .qp.s.labels[`x`y!("Date";"Price")];
+                    ,.qp.s.labels[`x`y!("Date";"Price")];
                 .qp.line[x; `date; `close]
                     .qp.s.geom[enlist[`fill]!enlist .gg.colour.Green]
                     ,.qp.s.scale [`y; .gg.scale.limits[6000 0N] .gg.scale.linear]
-                    , .qp.s.labels[`x`y!("Date";"Price")])}
+                    ,.qp.s.labels[`x`y!("Date";"Price")])}
   
   sma[update sma10:mavg[10;close],sma20:mavg[20;close] from select from wpData where sym=`BTC_USD,exch=`KRAKEN]
 ```
-|![Kraken sma BTC][sma]|
+|![Kraken sma BTC](resources/sma.png)|
 |:--:|
 |*Figure 2: 10 and 20 day Simple Moving Averages for Bitcoin*|
 
@@ -121,14 +121,14 @@ macd:{[tab;id;ex]
         }
 ``` 
 Figure 3 graphs the MACD for ETH_USD using data from HITBTC. 
-|![MACD ETH HITBT][macd]|
+|![MACD ETH HITBT](resources/macd.png)|
 |:--:|
 |*Figure 3: Moving Average Convergence Divergence for Ethereum using HITBTC data*|
 
 From the above graph, you can see how the close price interacts with the short and long EMA and how this then impacts the MACD and signal line relationship. There is a buy signal when the MACD line crosses over the signal line and there is a short signal when the MACD line crosses below the signal line.  
 
 ## RSI - Relative Strength Index  
-|![RSI ETH HITBTC][rsi]|
+|![RSI ETH HITBTC](resources/rsi.png)|
 |:--:|
 |*Figure 4: Relative Strength Index for Ethereum using HITBTC data*|
 
@@ -167,11 +167,11 @@ It is useful to use both  RSI and MACD together as both measure momentum in a ma
 
 ## MFI - Money Flow Index  
 
-|![MFI ETH HITBTC][mfi]|
+|![MFI ETH HITBTC](resources/mfi.png)|
 |:--:|
 |*Figure 5: Money flow Index for Ethereum where n=14*|
 
-Money Flow Index (MFI) is a technical oscillator that is similar to RSI but instead uses price and volume for identifying overbought and oversold conditions. This indicator weighs in on volume and not just price to give it relative score. A low volume with a large price movement will have less impact on the relative score compared to a high volume move with a lower price move. You see new highs/lows,large price swings but is there any volume behind the move or is it just small trade. The market will generally correct itself. It can be used to spot divergences that warn traders of a change in trend. MFI is known as the volume-weighted RSI[^4] .  We leverage the relativeStrength function used in the RSI calculation below.
+Money Flow Index (MFI) is a technical oscillator that is similar to RSI but instead uses price and volume for identifying overbought and oversold conditions. This indicator weighs in on volume and not just price to give it relative score. A low volume with a large price movement will have less impact on the relative score compared to a high volume move with a lower price move. You see new highs/lows and large price swings but also if there is there any volume behind the move or if it is just a small trade. The market will generally correct itself. It can be used to spot divergences that warn traders of a change in trend. MFI is known as the volume-weighted RSI[^4] .  We leverage the relativeStrength function used in the RSI calculation below.
 ```q
 mfiMain:{[h;l;c;n;v]
 		TP:avg(h;l;c); /typical price
@@ -183,15 +183,15 @@ mfiMain:{[h;l;c;n;v]
 ```
  Figure 6 shows the comparison between MFI graph and the RSI graph:
 
-|![MFI vs RSI][rsiVsMfi]|
+|![MFI vs RSI](resources/rsiVsMfi.png)|
 |:--:|
 |*Figure 6: MFI versus RSI*|
 
 It can be useful to use both RSI and MFI together to make sure there is volume behind the price move and not just a price jump.
 ## CCI - Commodity channel index  
-The Commodity Channel Index (CCI) is another tool used by technical analysts. Its primary use is for spotting new trends. It measures the current price level relative to an average price level over time. The CCI can be used for any market and is not just for commodities. It can be used to help identify if a security is approaching overbought and oversold levels. Its primary use is for spotting new trends. This can help traders make decisions on trades whether to add to position, exit position or take no part.
+The Commodity Channel Index (CCI) is another tool used by technical analysts. Its primary use is for spotting new trends. It measures the current price level relative to an average price level over time. The CCI can be used for any market and is not just for commodities. It can be used to help identify if a security is approaching overbought and oversold levels. Its primary use is for spotting new trends. This can help traders make decisions on trades whether to add to position, exit the position or take no part.
 
-When CCI is positive it indicates it is above historical average and when it is negative it indicates it is below historical average. Moving from negative ratings to high positive ratings can be used as a signal for a possible uptrend. Similarly, the reverse will signal downtrends. CCI has no upper or lower bound so finding out what typical overbought and oversold levels should be determined on each asset individually looking at its historical CCI levels[^5].
+When CCI is positive it indicates it is above the historical average and when it is negative it indicates it is below the historical average. Moving from negative ratings to high positive ratings can be used as a signal for a possible uptrend. Similarly, the reverse will signal downtrends. CCI has no upper or lower bound so finding out what typical overbought and oversold levels should be determined on each asset individually looking at its historical CCI levels[^5].
 
 CCI calculation:
 $$CCI= \frac{Typical Price- Moving Average}{.015 * Mean Deviation}$$
@@ -214,13 +214,13 @@ CCI:{[high;low;close;ndays]
     }
 ```
 
-|![CCI Graph][cci]|
+|![CCI Graph](resources/cci.png)|
 |:--:|
 |*Figure 7: Commocity Channel Index and close proce for Bitcion using Kraken data*|
 
 ## Bollinger Bands 
 
-|![Bollingard bands][bollingard] |
+|![Bollingard bands](resources/bollingard.png)|
 |:--:|
 | *Figure 8: Bollonger Bands for Bitcoin using KRaken data and n=20* | 
 
@@ -240,7 +240,7 @@ bollB[wpData;20;`KRAKEN;`BTC_USD]
 ## Force Index  
 The Force Index is a technical indicator that measures the amount of power behind a price move. It uses price and volume to assess the force behind a move or a possible turning point. The technical indicator is an unbounded oscillator that oscillates between a negative and positive value.  There are three essential elements to stock price movement-direction, extent and volume. The Force Index combines all three in this oscillator[^7].
 
-|![Force Index Graph][forceIndex]|
+|![Force Index Graph](resources/forceIndex.png)|
 |:--:|
 |*Figure 9: Force Index and Close Price for Bitcoin using Kraken data*|
 
@@ -249,7 +249,7 @@ The above graph is the 13-day EMA of the Force Index. It can be seen that the Fo
  The Force Index calculation subtracts today's close from the prior day's close and multiplies it by the daily volume. The next step is to calculate the 13 day EMA of this value. The code used is shown below:
  
 ```q
- //Force Index Indicator
+//Force Index Indicator
 /c-close
 /v-volume
 /n-num of periods
@@ -261,7 +261,7 @@ forceIndex:{[c;v;n]
 
 ## EMV - Ease of Movement Value  
 
-Ease of Movement Value(EMV) is another technical indicator that combines momentum and volume information into one value. The idea is to use this value to decide if the prices are able to rise or fall with little resistance in directional movement. 
+Ease of Movement Value (EMV) is another technical indicator that combines momentum and volume information into one value. The idea is to use this value to decide if the prices are able to rise or fall with little resistance in directional movement. 
 
 $$Distance Moved= \frac{High + Low}{2}- \frac{Prior High + Prior Low}{2}$$
 $$Box Ratio= \frac{\frac{Volume}{scaleFactor}}{High- Low}$$
@@ -271,7 +271,7 @@ $$ EMV= \frac{Distance moved}{Box Ratio}$$
 The scale factor is chosen to produce a normal number. This is generally relative to the volume of shares traded.
  
 ```q
-//Eae of movement value -EMV
+//Ease of movement value -EMV
 /h-high
 /l-low
 /v-volume
@@ -283,7 +283,7 @@ emv:{[h;l;v;s;n]
 		(n#0nf),n _mavg[n;distMoved%boxRatio]
 		}
 ```
-|![emv][emv]|
+|![emv](resources/emv.png)|
 |:--:|
 |*Figure 10: Ease of Movement ,Close and Volume for Ethereum using Kraken Data*|
 
@@ -303,17 +303,17 @@ roc:{[c;n]
 ```
 A positive move in the ROC indicates that there was a sharp price advance. This can be seen on the graph in Figure 11 between the 8th and 22nd of June. A downward drop indicates steep decline in the price. This oscillator is prone to whipsaw around the zero line as can be seen in the graph. For the graph  below n=9 is used, which is commonly used by short term traders. 
 
-|![roc][roc]|
+|![roc](resources/roc.png)|
 |:--:|
 |*Figure 11: Rate of change for Bitcoin using Kraken data*|
 
 ## Stochastic Oscillator 
 
-|![stochastic][stochastic]|
+|![stochastic](resources/stochastic.png)|
 |:--:|
 |*Figure 12: Stochastic Oscillator with smoothing %K=1,%D=3 for itcoin using Kraken data*|
 
-The stochastic Oscillator is a momentum indicator comparing a particular closing price of a security to a range of its prices over a certain period of time. You can adjust the sensitivity of the indicator by adjusting the time period and by taking the moving average of the result. The indicator has a 0-100 range that can be used to indicate overbought and oversold signals. A security is considered over overbought when greater than 80 and oversold when less than 20. For this case n will be 14(14 days) [^9] . It is calculated using the following :
+The stochastic Oscillator is a momentum indicator comparing a particular closing price of a security to a range of its prices over a certain period of time. You can adjust the sensitivity of the indicator by adjusting the time period and by taking the moving average of the result. The indicator has a 0-100 range that can be used to indicate overbought and oversold signals. A security is considered overbought when greater than 80 and oversold when less than 20. For this case n will be 14(14 days) [^9] . It is calculated using the following :
 $$ \%K = \frac{C-L(n)}{H(n)-L(n)} $$  
 where C=Current Close,
 L(n)=Low across last n days,
@@ -352,12 +352,12 @@ stoOscD:{[c;h;l;n;k]
 Both of these technical indicators are oscillators, but they are calculated quite differently. One of the main differences is that the  stochastic Oscillator  is bound between zero and 100, while the CCI is unbounded. Due to the calculation differences, they will provide different signals at different times, such as overbought and oversold readings.
 
 ## Aroon Oscillator
-Aroon Indicator is a technical indicator which is used to identify trend changes in the price of a security and the strength of that trend which is used in the Aroon oscillator . An Aroon Indicator has two parts: aroonUp and aroonDown which measure the time between highs and lows respectively over a period of time n (generally n=25days). The objective of the indicator is that strong uptrends will regularly see new highs and strong downtrends will regularly see new lows. The range of the indicator is between 0-100.
+The Aroon Indicator is a technical indicator which is used to identify trend changes in the price of a security and the strength of that trend which is used in the Aroon oscillator . An Aroon Indicator has two parts: aroonUp and aroonDown which measure the time between highs and lows respectively over a period of time n (generally n=25days). The objective of the indicator is that strong uptrends will regularly see new highs and strong downtrends will regularly see new lows. The range of the indicator is between 0-100.
 $$ aroonUp=\frac{n-periodsSinceNPeriodHigh}{n}*100$$
  $$ aroonDown=\frac{n-periodsSinceNPeriodLow}{n}*100$$
 
 
-|![aroon][aroon]|
+|![aroon](resources/aroon.png)|
 |:--:|
 |*Figure 13: Aroon Oscillator and Aroon Inicator*|
 
@@ -373,7 +373,7 @@ aroon:{[c;n;f]
 ``` 
  Aroon Oscillator subtracts aroonUp from aroonDown making the range of this Oscillator between -100 and 100. 
 $$ aroonOsc= aroonUp - aroonDown $$
-The oscillator moves above the zero line when aroonUp moves above the aroonDown. The oscillator drops below zero line when the aroonDown moves above the aroonDown.
+The oscillator moves above the zero line when aroonUp moves above the aroonDown. The oscillator drops below the zero line when the aroonDown moves above the aroonDown.
  
 # Conclusion  
 This paper illustrates how kdb/q can be used to perform trade analytics. The paper discusses commonly used trend indictors and oscillators which traders and quantitative analyst use to trigger buy/sell signals while also offering them a clearer image of the market.This paper highlights our visualisation tool, kx for analyst, and shows how easily it can be implemented to display statistics in a clear graphical manner. 
@@ -388,21 +388,3 @@ This paper illustrates how kdb/q can be used to perform trade analytics. The pap
 [^8]: https://therobusttrader.com/rate-of-change-indicator-roc/
 [^9]: https://www.investopedia.com/terms/s/stochasticoscillator.asp
 [^10]: https://www.investopedia.com/terms/a/aroonoscillator.asp
-
-
-[sma]:https://drive.google.com/uc?id=1ycwHipo2eg93VBbWdsUexe9FSGbfXf5d
-[krakenCandleStick]: https://drive.google.com/uc?id=1BQjcd4ijPdsQ7NuRkt1d22JPcYhAoG42
-[macd]: https://drive.google.com/uc?id=1yIrvFgyxjBZYDaYgL7GHg8afLMsCpS7j
-[rsi]: https://drive.google.com/uc?id=1UPT2PWI8No2XtJXlm74ma9wIEtii5z0-
-[mfi]: https://drive.google.com/uc?id=1EwReDlRvdY6u0ytIE1mSZ-qAm7bQ5tve
-[rsiVsMfi]: https://drive.google.com/uc?id=1x9HHmpJFq7NV11wZQCL1HHmm7OrGo3NT
-[emv]: https://drive.google.com/uc?id=1CId2y1cK-KlqvT7jsbOsrDA_tm-9jxUy
-[bollingard]: https://drive.google.com/uc?id=1KqQ_XYKVCBWw4gk41T3kNWr6yEPnkZZp
-[forceIndex]: https://drive.google.com/uc?id=1PFKDwSoYC2wQTYIpxNCzJH_b9kI3A0z1
-[roc]: https://drive.google.com/uc?id=1byQUh6T0OFrzFtX1r5OLFn0j7pQYnBdj
-[stochastic]: https://drive.google.com/uc?id=1uTEQtKAu_wljnAswYXGQOVR_s_FxhSTW
-[cci]: https://drive.google.com/uc?id=1_9GoEFLLzGo3zHFqRSNczVN8S5ReqJAy
-[aroon]:https://drive.google.com/uc?id=1B6XRtmXJwwt-eEMYDNP8k11yQltm7szs
-
-
-> Written with [StackEdit](https://stackedit.io/).
