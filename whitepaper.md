@@ -35,8 +35,7 @@ A python script was created which connected to exchange feeds and extracted the 
 Trend/technical traders use a combination of patterns and indicators from price charts to help them make financial decisions. Technical traders analyse price charts to develop theories about what direction the market is likely to move.
 
 ## Pattern Recognition
- <!--FIXME: The grammar of this sentence isn't clear --> 
- A common chart used in trying to identify patterns in, say , open/high/low/close the Candlestick as illustrated below.
+The candlestick chart is used for describing price movements in a particular security. The chart illustrates the open/high/low/close of a security and is used by traders to identify patterns based on past movements. 
  ```q
  candlestick : {
     fillscale : .gg.scale.colour.cat 01b!(.gg.colour.Red; .gg.colour.Green);
