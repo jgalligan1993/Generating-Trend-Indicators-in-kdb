@@ -1,4 +1,4 @@
-﻿# Generating Statistics and Trend Indicators in kdb+  
+﻿# Implementing Trend Indicators in kdb+  
   
 ## Introduction   
 
@@ -8,11 +8,10 @@ The code is developed on version 3.6 2019.03.07 of kdb+. Cryptocurrency data for
 
 All code used in this paper is contained in the following git repository: [Generating-Trend-Indicators-in-kdb](https://github.com/jgalligan1993/Generating-Trend-Indicators-in-kdb).
 
-This whitepaper has 3 main parts:  
+This whitepaper has 2 main parts:  
   
 1. Data Extraction  
 2. Technical Analysis
-3. Trend analysis - Oscillators and Indicators.
 
 ## Data extraction  
   
