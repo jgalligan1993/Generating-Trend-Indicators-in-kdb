@@ -24,14 +24,14 @@ Data was captured in a similar process to the one used in Eduard Silantyev's blo
     
 which span across May, June and July 2019. There is just over 2 months of data.  
   
-A python script was created which connected to exchange feeds and extracted the relevent data which was then published to a kdb+ tickerplant. The tickerplant processed the messages and sent them to RDB which was written down to a HDB at the end of the day. Such details will not be elaborated on as the main focus of this whitepaper is on Simple Statistics and Trend Indicators. Please view the following resources for help with tick capture:  
+A python script was created which connected to exchange feeds and extracted the relevent data which was then published to a kdb+ tickerplant. The tickerplant processed the messages and sent them to an RDB. At the end of the day this data was then written down to a HDB where the data could be accessed for analysis. Such details will not be elaborated on as the main focus of this whitepaper is on implementing Trend Indicators using kdb. Please view the following resources for help with tick capture:  
   
 * [Kdb+tick profiling for throughput optimization](https://code.kx.com/v2/wp/tick-profiling/)  
 * [Disaster-recovery planning for kdb+ tick systems](https://code.kx.com/v2/wp/disaster-recovery/)  
 * [Query Routing: A kdb+ framework for a scalable, load balanced system](https://code.kx.com/v2/wp/query-routing/)  
   
 # Technical Analysis
-Trend/technical traders use a combination of patterns and indicators from price charts to help them make financial decisions. Technical traders analyse price charts to develop theories about what direction the market is likely to move.
+Technical analysis is the process of identifying trading opportunities based on past price movements using different stock charts. Trend/technical traders use a combination of patterns and indicators from price charts to help them make financial decisions. Investors analyse price charts to develop theories about what direction the market is likely to move. Commonly used in technical analysis tools are the Candlestick chart,Moving Average Convergence Divergence and Relative Strength Index. These tools are created using q/kdb's in-built functions such as sma/ema/min/max/avg.  The tools discussed don't predict future prices but provide the investor information to determine their next move. The indicators create buy and sell signals using moving averages,prices,volume, days since previous high or low. The investor can then make his financial decision based on the signals created.
 
 ## Pattern Recognition
 The candlestick chart is used for describing price movements in a particular security. The chart illustrates the open/high/low/close of a security and is used by traders to identify patterns based on past movements. 
@@ -374,7 +374,7 @@ $$ aroonOsc= aroonUp - aroonDown $$
 The oscillator moves above the zero line when aroonUp moves above the aroonDown. The oscillator drops below the zero line when the aroonDown moves above the aroonDown.
  
 # Conclusion  
-This paper illustrates how kdb/q can be used to perform trade analytics. The paper discusses commonly used trend indictors and oscillators which traders and quantitative analyst use to trigger buy/sell signals while also offering them a clearer image of the market.This paper highlights our visualisation tool, kx for analyst, and shows how easily it can be implemented to display statistics in a clear graphical manner. 
+This paper illustrates how kdb/q can be used to perform commonly used trade analytics that are not out-of-the-box but can be efficiently implemented using in-built functions. The paper discusses commonly used trend indicators and oscillators which traders and quantitative analyst use to trigger buy/sell signals while also offering them a clearer image of the market. This paper highlights our visualisation tool, kx for analyst, and shows how easily it can be implemented to display statistics in a clear graphical manner. 
 
 [^1]: https://kx.com/blog/combining-high-frequency-cryptocurrency-venue-data-using-kdb/
 [^2]: https://www.investopedia.com/terms/m/macd.asp
