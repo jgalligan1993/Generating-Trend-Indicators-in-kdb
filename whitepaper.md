@@ -67,7 +67,7 @@ The candlestick chart is used for describing price movements in a particular sec
 
 Each candle shows the high/open/close/low and if our security closed higher than the open. This can be useful in predicting short term price movements.
 
-## SMA-Simple Moving Averages- comparing different ranges 
+## SMA-Simple Moving Averages- Comparing different ranges 
 The price of a security can be extremely volatile and large price movements can make it hard to pinpoint the general trend. Moving averages "smooth" price data by creating a single flowing line. The line represents the average price over a period of time. Which moving average the trader decides to use is determined by the time frame in which he or she trades. 
 
 There are two commonly used moving averages: Simple Moving Average (SMA) and Exponential Moving Average (EMA). EMA gives a larger weighting to more recent prices when calculating the average. In Figure 2 you can see the 10-Day moving average and 20-Day moving average along with the close price.
