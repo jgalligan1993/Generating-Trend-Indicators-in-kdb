@@ -72,7 +72,7 @@ The price of a security can be extremely volatile and large price movements can 
 
 There are two commonly used moving averages: Simple Moving Average (SMA) and Exponential Moving Average (EMA). EMA gives a larger weighting to more recent prices when calculating the average. In Figure 2 you can see the 10-Day moving average and 20-Day moving average along with the close price.
 
-Traders analyse where the current trade price lies in relation to the moving averages. If the current trade price is  above the MA (moving average) line this would indicate over-bought (decline in price expected), trade price below MA would indicate over-sold (increase in price may be seen).
+Traders analyse where the current trade price lies in relation to the moving averages. If the current trade price is  above the Moving average (MA)  line this would indicate over-bought (decline in price expected), trade price below MA would indicate over-sold (increase in price may be seen).
 
 It should be noted that a signal/trend indicator would not determine a trading strategy but would be analysed in conjunction with other factors. 
 
@@ -169,7 +169,7 @@ It is useful to use both  RSI and MACD together as both measure momentum in a ma
 |:--:|
 |*Figure 5: Money flow Index for Ethereum where n=14*|
 
-Money Flow Index (MFI) is a technical oscillator that is similar to RSI but instead uses price and volume for identifying overbought and oversold conditions. This indicator weighs in on volume and not just price to give it relative score. A low volume with a large price movement will have less impact on the relative score compared to a high volume move with a lower price move. You see new highs/lows and large price swings but also if there is there any volume behind the move or if it is just a small trade. The market will generally correct itself. It can be used to spot divergences that warn traders of a change in trend. MFI is known as the volume-weighted RSI[^4] .  We leverage the relativeStrength function used in the RSI calculation below.
+Money Flow Index (MFI) is a technical oscillator that is similar to RSI but instead uses price and volume for identifying overbought and oversold conditions. This indicator weighs in on volume and not just price to give it relative score. A low volume with a large price movement will have less impact on the relative score compared to a high volume move with a lower price move. You see new highs/lows and large price swings but also if there is a price swing is there any volume behind the move or if it is just a small trade. The market will generally correct itself. It can be used to spot divergences that warn traders of a change in trend. MFI is known as the volume-weighted RSI[^4] .  We leverage the relativeStrength function used in the RSI calculation below.
 ```q
 mfiMain:{[h;l;c;n;v]
 		TP:avg(h;l;c); /typical price
@@ -242,7 +242,7 @@ The Force Index is a technical indicator that measures the amount of power behin
 |:--:|
 |*Figure 9: Force Index and Close Price for Bitcoin using Kraken data*|
 
-The above graph is the 13-day EMA of the Force Index. It can be seen that the Force Index crosses the centre line the price begins to increase. This would indicate that bullish trading  is exerting a greater force. However, this changes towards the end of July where there is a significant change from a high positive force index to a negative one and the price drops dramatically. It suggests the emergence of a bear market.
+The above graph is the 13-day EMA of the Force Index. It can be seen that the Force Index crosses the centre line as the price begins to increase. This would indicate that bullish trading  is exerting a greater force. However, this changes towards the end of July where there is a significant change from a high positive force index to a negative one and the price drops dramatically. It suggests the emergence of a bear market.
  
  The Force Index calculation subtracts today's close from the prior day's close and multiplies it by the daily volume. The next step is to calculate the 13 day EMA of this value. The code used is shown below:
  
