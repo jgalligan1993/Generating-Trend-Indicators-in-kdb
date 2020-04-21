@@ -374,7 +374,7 @@ $$ aroonOsc= aroonUp - aroonDown $$
 The oscillator moves above the zero line when aroonUp moves above the aroonDown. The oscillator drops below the zero line when the aroonDown moves above the aroonDown.
  
 # Conclusion  
-This paper illustrates how kdb/q can be used to perform commonly used trade analytics that are not out-of-the-box but can be efficiently implemented using in-built functions. The paper discusses commonly used trend indicators and oscillators which traders and quantitative analyst use to trigger buy/sell signals while also offering them a clearer image of the market. This paper highlights our visualisation tool, kx for analyst, and shows how easily it can be implemented to display statistics in a clear graphical manner. 
+This paper illustrates how kdb/q can be used to perform commonly used trade analytics that are not out-of-the-box but can be efficiently implemented using in-built functions. The paper discusses commonly used trend indicators and oscillators which traders and quantitative analyst use to trigger buy/sell signals while also offering them a clearer image of the market.This paper only touches the tip of the iceburg of what can be done in analytics but it emphasises how powerful kdb can be in data analytics. Libraries of custom built analytic functions can be created with ease and in a short space of time. This paper also highlights our visualisation tool, kx for analyst, and shows how easily it can be implemented to display statistics in a clear graphical manner.  
 
 [^1]: https://kx.com/blog/combining-high-frequency-cryptocurrency-venue-data-using-kdb/
 [^2]: https://www.investopedia.com/terms/m/macd.asp
