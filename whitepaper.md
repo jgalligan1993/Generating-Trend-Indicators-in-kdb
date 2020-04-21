@@ -76,6 +76,23 @@ Traders analyse where the current trade price lies in relation to the moving ave
 
 It should be noted that a signal/trend indicator would not determine a trading strategy but would be analysed in conjunction with other factors. 
 
+Below shows how simply you can apply indicator to memory table an automatically see the update table.
+
+```q
+10#wpDataKrakenBitcoin
+index	date	sym	exch	high	low	open	close	vol
+0	2019.05.09	BTC_USD	KRAKEN	6174f	6037.9	6042f	6151.4	1808.803
+1	2019.05.10	BTC_USD	KRAKEN	6430f	6110.1	6151.4	6337.9	9872.36
+2	2019.05.11	BTC_USD	KRAKEN	7450f	6338f	6339.5	7209.9	18569.93
+3	2019.05.12	BTC_USD	KRAKEN	7588f	6724.1	7207.9	6973.9	18620.15
+4	2019.05.13	BTC_USD	KRAKEN	8169.3	6870f	6970.1	7816.3	19668.6
+5	2019.05.14	BTC_USD	KRAKEN	8339.9	7620f	7817.1	7993.7	18118.61
+6	2019.05.15	BTC_USD	KRAKEN	8296.9	5414.5	7988.9	8203f	11599.71
+7	2019.05.16	BTC_USD	KRAKEN	8370f	7650f	8201.5	7880.7	13419.86
+8	2019.05.17	BTC_USD	KRAKEN	7946.2	6636f	7883.6	7350f	21017.35
+9	2019.05.18	BTC_USD	KRAKEN	7494.2	7205f	7353.9	7266.8	6258.585
+```
+
 The graph in Figure 2 was created using Kx Analyst. A sample for this code can be seen below. All graphics of grammer code can be found in the git repository for this project. The following is a example:
 ```q
 sma:{[x]
