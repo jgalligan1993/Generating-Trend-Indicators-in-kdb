@@ -217,7 +217,22 @@ mfiMain:{[h;l;c;n;v]
 |:--:|
 |*Figure 6: MFI versus RSI*|
 
-It can be useful to use both RSI and MFI together to make sure there is volume behind the price move and not just a price jump.
+It can be useful to use both RSI and MFI together to make sure there is volume behind the price move and not just a price jump. Here is another good example to show the output of the update columns after applying the indicators to the in memory table defined above as bitcoinKraken. The table below shows the table update with the output columns attached on to the end. This is an example of how easy it is to compare statistical outputs. The below compares the 6 day rsi and the 6 day mfi.
+```q
+q)10#update rsi:rsiMain[close;6],mfi:mfiMain[high;low;close;6;vol] from bitcoinKraken
+date       sym     exch   high   low    open   close  vol      rsi      mfi
+--------------------------------------------------------------------------------
+2019.05.09 BTC_USD KRAKEN 6174   6037.9 6042   6151.4 1808.803
+2019.05.10 BTC_USD KRAKEN 6430   6110.1 6151.4 6337.9 9872.36
+2019.05.11 BTC_USD KRAKEN 7450   6338   6339.5 7209.9 18569.93
+2019.05.12 BTC_USD KRAKEN 7588   6724.1 7207.9 6973.9 18620.15
+2019.05.13 BTC_USD KRAKEN 8169.3 6870   6970.1 7816.3 19668.6
+2019.05.14 BTC_USD KRAKEN 8339.9 7620   7817.1 7993.7 18118.61
+2019.05.15 BTC_USD KRAKEN 8296.9 5414.5 7988.9 8203   11599.71 90.64828 81.06234
+2019.05.16 BTC_USD KRAKEN 8370   7650   8201.5 7880.7 13419.86 78.60196 85.19688
+2019.05.17 BTC_USD KRAKEN 7946.2 6636   7883.6 7350   21017.35 62.25494 62.04519
+2019.05.18 BTC_USD KRAKEN 7494.2 7205   7353.9 7266.8 6258.585 59.91089 62.10847
+```
 ## CCI - Commodity channel index  
 The Commodity Channel Index (CCI) is another tool used by technical analysts. Its primary use is for spotting new trends. It measures the current price level relative to an average price level over time. The CCI can be used for any market and is not just for commodities. It can be used to help identify if a security is approaching overbought and oversold levels. Its primary use is for spotting new trends. This can help traders make decisions on trades whether to add to position, exit the position or take no part.
 
