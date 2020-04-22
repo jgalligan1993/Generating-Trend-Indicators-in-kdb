@@ -76,8 +76,8 @@ Traders analyse where the current trade price lies in relation to the moving ave
 
 It should be noted that a signal/trend indicator would not determine a trading strategy but would be analysed in conjunction with other factors. 
 
-Below shows how simply you can apply indicator to memory table an automatically see the update table.
-The below table is an example of some close information for bitcoin trading on Kraken. This in-memory table bitcoinKraken will be used to illustrate how top apply some of the indicators. In the example below sma for 2 and 5 periods will be shown. You will see the updated columns displayed in the table. 
+Below shows how simply you can apply indicator to a in-memory table and automatically see the updated table.
+The table below,"bitcoinKraken", is an example of some End Of Day information including high,low,open,close,volume  for bitcoin trading on Kraken. This in-memory table will be used to illustrate how to apply some of the indicators to a in-memory table and automatically see the updated table. In this example the simple moving average of the close price for 2 and 5 periods will be shown. 
 ```q
 q)10#bitcoinKraken
 date       sym     exch   high   low    open   close  vol
@@ -137,7 +137,8 @@ sma:{[x]
 
 ## MACD - Moving Average Convergence Divergence  
 Moving Average Convergence Divergence (MACD) is an important and popular analysis tool. It is a trend indicator that shows the relationship between two moving averages of a securities price. MACD is calculated by subtracting the long term EMA (26 periods) from the short term EMA (12 periods). A period is generally defined as a day but shorter/longer time spans can be used. Throughout this paper we will consider a period to be one day. EMAs place greater weight and significance on the more recent data points and react more significantly to price movements than SMA. The 9-day moving average of the MACD is also calculated and plotted. This line is known as the signal line and can be used to identify buy and sell signals[^2].  
-The code for calculating the MACD is very simple and leverages kdb/q's built in function of ema.
+The code for calculating the MACD is very simple and leverages kdb/q's built in function of ema. An example of how the code is executed,along with a subset of the output is displayed.
+
 ```q
 /tab-table input
 /id-ID you want `ETH_USD/BTC_USD
@@ -149,6 +150,21 @@ macd:{[tab;id;ex]
         res:select sym,date,exch,close,ema12:ema[2%13;close],ema26:ema[2%27;close],macd:macd[close] from tab where sym=id,exch=ex;
         update signal:signal[macd] from res
         }
+	
+// -Sample output of macd function
+q)10#macd[bitcoinKraken;`BTC_USD;`KRAKEN]
+sym     date       exch   close  ema12    ema26    macd     signal
+--------------------------------------------------------------------
+BTC_USD 2019.05.09 KRAKEN 6151.4 6151.4   6151.4   0        0
+BTC_USD 2019.05.10 KRAKEN 6337.9 6180.092 6165.215 14.87749 2.975499
+BTC_USD 2019.05.11 KRAKEN 7209.9 6338.524 6242.599 95.92536 21.56547
+BTC_USD 2019.05.12 KRAKEN 6973.9 6436.274 6296.769 139.505  45.15338
+BTC_USD 2019.05.13 KRAKEN 7816.3 6648.586 6409.327 239.2588 83.97447
+BTC_USD 2019.05.14 KRAKEN 7993.7 6855.527 6526.688 328.8385 132.9473
+BTC_USD 2019.05.15 KRAKEN 8203   7062.83  6650.859 411.9708 188.752
+BTC_USD 2019.05.16 KRAKEN 7880.7 7188.656 6741.959 446.6977 240.3411
+BTC_USD 2019.05.17 KRAKEN 7350   7213.478 6786.999 426.4797 277.5688
+BTC_USD 2019.05.18 KRAKEN 7266.8 7221.682 6822.54  399.1421 301.8835
 ``` 
 Figure 3 graphs the MACD for ETH_USD using data from HITBTC. 
 |![MACD ETH HITBT](resources/macd.png)|
@@ -217,7 +233,7 @@ mfiMain:{[h;l;c;n;v]
 |:--:|
 |*Figure 6: MFI versus RSI*|
 
-It can be useful to use both RSI and MFI together to make sure there is volume behind the price move and not just a price jump. Here is another good example to show the output of the update columns after applying the indicators to the in memory table defined above as bitcoinKraken. The table below shows the table update with the output columns attached on to the end. This is an example of how easy it is to compare statistical outputs. In Figure 6 the 14 day period rsi and mfi are compared but below 6 day period is chosen.
+It can be useful to use both RSI and MFI together to make sure there is volume behind the price move and not just a price jump. Here is another good example to show the output of the update columns after applying the indicators to the in memory table defined above as bitcoinKraken. The table below shows bitcoinKraken updated with the output columns attached on to the end. This is an example of how easy it is to compare statistical outputs. In Figure 6 the 14 day period rsi and mfi are compared but below 6 day period is chosen.
 ```q
 q)10#update rsi:rsiMain[close;6],mfi:mfiMain[high;low;close;6;vol] from bitcoinKraken
 date       sym     exch   high   low    open   close  vol      rsi      mfi
