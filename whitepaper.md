@@ -31,7 +31,7 @@ A python script was created which connected to exchange feeds and extracted the 
 * [Query Routing: A kdb+ framework for a scalable, load balanced system](https://code.kx.com/v2/wp/query-routing/)  
   
 # Technical Analysis
-Technical analysis is the process of identifying trading opportunities based on past price movements using different stock charts. Trend/technical traders use a combination of patterns and indicators from price charts to help them make financial decisions. Investors analyse price charts to develop theories about what direction the market is likely to move. Commonly used in technical analysis tools are the Candlestick chart,Moving Average Convergence Divergence and Relative Strength Index. These tools are created using q/kdb's in-built functions such as sma/ema/min/max/avg.  The tools discussed don't predict future prices but provide the investor information to determine their next move. The indicators create buy and sell signals using moving averages,prices,volume, days since previous high or low. The investor can then make his financial decision based on the signals created.
+Technical analysis is the process of identifying trading opportunities based on past price movements using different stock charts. Trend/technical traders use a combination of patterns and indicators from price charts to help them make financial decisions. Investors analyse price charts to develop theories about what direction the market is likely to move. Commonly used in technical analysis tools are the Candlestick chart,Moving Average Convergence Divergence and Relative Strength Index. These tools are created using q/kdb's in-built functions such as mavg/ema/min/max/avg.  The tools discussed don't predict future prices but provide the investor information to determine their next move. The indicators create buy and sell signals using moving averages, prices, volume, days since previous high or low. The investor can then make his financial decision based on the signals created.
 
 ## Pattern Recognition
 The candlestick chart is used for describing price movements in a particular security. The chart illustrates the open/high/low/close of a security and is used by traders to identify patterns based on past movements. 
@@ -67,7 +67,7 @@ The candlestick chart is used for describing price movements in a particular sec
 
 Each candle shows the high/open/close/low and if our security closed higher than the open. This can be useful in predicting short term price movements.
 
-## SMA-Simple Moving Averages- Comparing different ranges 
+## SMA-Simple Moving Averages- Comparing Different Ranges 
 The price of a security can be extremely volatile and large price movements can make it hard to pinpoint the general trend. Moving averages "smooth" price data by creating a single flowing line. The line represents the average price over a period of time. Which moving average the trader decides to use is determined by the time frame in which he or she trades. 
 
 There are two commonly used moving averages: Simple Moving Average (SMA) and Exponential Moving Average (EMA). EMA gives a larger weighting to more recent prices when calculating the average. In Figure 2 you can see the 10-Day moving average and 20-Day moving average along with the close price.
@@ -77,7 +77,7 @@ Traders analyse where the current trade price lies in relation to the moving ave
 It should be noted that a signal/trend indicator would not determine a trading strategy but would be analysed in conjunction with other factors. 
 
 Below shows how simply you can apply indicator to a in-memory table and automatically see the updated table.
-The table below,"bitcoinKraken", is an example of some End Of Day information including high,low,open,close,volume  for bitcoin trading on Kraken. This in-memory table will be used to illustrate how to apply some of the indicators to a in-memory table and automatically see the updated table. In this example the simple moving average of the close price for 2 and 5 periods will be shown. 
+The table below,"bitcoinKraken", is an example of some End Of Day information including high,low,open,close,volume  for bitcoin trading on Kraken. This table will be used to illustrate how to apply some of the indicators to a in-memory table and automatically see the updated table. In this example the simple moving average of the close price for 2 and 5 periods will be shown. 
 ```q
 q)10#bitcoinKraken
 date       sym     exch   high   low    open   close  vol
@@ -136,8 +136,8 @@ sma:{[x]
 |*Figure 2: 10 and 20 day Simple Moving Averages for Bitcoin*|
 
 ## MACD - Moving Average Convergence Divergence  
-Moving Average Convergence Divergence (MACD) is an important and popular analysis tool. It is a trend indicator that shows the relationship between two moving averages of a securities price. MACD is calculated by subtracting the long term EMA (26 periods) from the short term EMA (12 periods). A period is generally defined as a day but shorter/longer time spans can be used. Throughout this paper we will consider a period to be one day. EMAs place greater weight and significance on the more recent data points and react more significantly to price movements than SMA. The 9-day moving average of the MACD is also calculated and plotted. This line is known as the signal line and can be used to identify buy and sell signals[^2].  
-The code for calculating the MACD is very simple and leverages kdb/q's built in function of ema. An example of how the code is executed,along with a subset of the output is displayed.
+Moving Average Convergence Divergence (MACD) is an important and popular analysis tool. It is a trend indicator that shows the relationship between two moving averages of a securities price. MACD is calculated by subtracting the long term EMA (26 periods) from the short term EMA (12 periods). A period is generally defined as a day but shorter/longer timespans can be used. Throughout this paper we will consider a period to be one day. EMAs place greater weight and significance on the more recent data points and react more significantly to price movements than SMA. The 9-day moving average of the MACD is also calculated and plotted. This line is known as the signal line and can be used to identify buy and sell signals[^2].  
+The code for calculating the MACD is very simple and leverages kdb+/q's built in function of ema. An example of how the code is executed, along with a subset of the output is displayed.
 
 ```q
 /tab-table input
@@ -187,7 +187,7 @@ $$ RS=\frac{Average Gain}{Avergae Loss}$$
 The first calculation of the average gain/loss are simple 14 day averages.
 
  - First Average Gain=Sum of Gains over the past 14 days/14
- - First Average Loss=Sum of losses over the past 14 days/14
+ - First Average Loss=Sum of Losses over the past 14 days/14
 
 The subsequent calculations are based on the prior averages and the current gain/loss :
  $$ AvgGain=\frac{(prev Avg Gain)*13 + current Gain}{14}$$
@@ -249,7 +249,7 @@ date       sym     exch   high   low    open   close  vol      rsi      mfi
 2019.05.17 BTC_USD KRAKEN 7946.2 6636   7883.6 7350   21017.35 62.25494 62.04519
 2019.05.18 BTC_USD KRAKEN 7494.2 7205   7353.9 7266.8 6258.585 59.91089 62.10847
 ```
-## CCI - Commodity channel index  
+## CCI - Commodity Channel Index  
 The Commodity Channel Index (CCI) is another tool used by technical analysts. Its primary use is for spotting new trends. It measures the current price level relative to an average price level over time. The CCI can be used for any market and is not just for commodities. It can be used to help identify if a security is approaching overbought and oversold levels. Its primary use is for spotting new trends. This can help traders make decisions on trades whether to add to position, exit the position or take no part.
 
 When CCI is positive it indicates it is above the historical average and when it is negative it indicates it is below the historical average. Moving from negative ratings to high positive ratings can be used as a signal for a possible uptrend. Similarly, the reverse will signal downtrends. CCI has no upper or lower bound so finding out what typical overbought and oversold levels should be determined on each asset individually looking at its historical CCI levels[^5].
@@ -437,7 +437,7 @@ $$ aroonOsc= aroonUp - aroonDown $$
 The oscillator moves above the zero line when aroonUp moves above the aroonDown. The oscillator drops below the zero line when the aroonDown moves above the aroonDown.
  
 # Conclusion  
-This paper illustrates how kdb/q can be used to perform commonly used trade analytics that are not out-of-the-box but can be efficiently implemented using in-built functions. The functions outlined range from moving averages to more complex functions like Relative Strenght Index And Moving Average Convergence Divergence. There is a discussion how traders and quatitative analysts use these common trend indicators and oscillators to trigger buy/sell signals . The indicators also offer them a clearer image of the current market. This only touches the tip of the iceburg of what can be done in analytics but it emphasises how powerful kdb can be in data analytics. Libraries of custom built analytic functions can be created with ease and in a short space of time. This paper also highlights our visualisation tool, Kx Analyst, and shows how easily it can be implemented to display statistics in a clear graphical manner.  
+This paper illustrates how kdb+/q can be applied to perform commonly used trade analytics that are not out-of-the-box but can be efficiently implemented using primitive functions. The functions outlined range from moving averages to more complex functions like Relative Strength Index And Moving Average Convergence Divergence which are used by quants and traders in building out a much more powerful analytics solution. The common trend indicators outlined are a method of triggering buy/sell signals, while also offering them a clearer image of the current market. This only touches the tip of the iceberg of what can be done in analytics but it emphasises how powerful kdb+ can be in a data analytics solution. Libraries of custom built analytic functions can be created with ease and in a short space of time which can be applied to realtime and historic data. This paper also highlights Kx Analyst a visualisation tool used to display statistics in a clear graphical manner. Kx Analyst provides the ability to graphically display the output of the functions in the same IDE as they where created. The combination of this library of functions and Kx Analyst provides the user faster development and proccessing times to gain meaningful insights from the data.
 
 [^1]: https://kx.com/blog/combining-high-frequency-cryptocurrency-venue-data-using-kdb/
 [^2]: https://www.investopedia.com/terms/m/macd.asp
