@@ -76,8 +76,8 @@ Traders analyse where the current trade price lies in relation to the moving ave
 
 It should be noted that a signal/trend indicator would not determine a trading strategy but would be analysed in conjunction with other factors. 
 
-Below shows how simply you can apply indicator to a in-memory table and automatically see the updated table.
-The table below,"bitcoinKraken", is an example of some End Of Day information including high,low,open,close,volume  for bitcoin trading on Kraken. This table will be used to illustrate how to apply some of the indicators to a in-memory table and automatically see the updated table. In this example the simple moving average of the close price for 2 and 5 periods will be shown. 
+The below code snipet shows how you can simply apply an indicator to a in-memory table and automatically see the updated table.
+The table below, "bitcoinKraken", is an example of some End Of Day information including high, low, open, close, volume  for Bitcoin trading on Kraken. This table will be used throughouty the paper to illustrate how to apply some of the indicators to a in-memory table. In this example the simple moving average of the close price for 2 and 5 periods will be shown. 
 ```q
 q)10#bitcoinKraken
 date       sym     exch   high   low    open   close  vol
@@ -208,6 +208,8 @@ rsiMain:{[close;n]
 	rs:relativeStrength[n;diff*diff>0]%relativeStrength[n;abs diff*diff<0];
 	rsi:100*rs%(1+rs);
 	rsi}
+/- sample query
+update rsi:rsiMain[close;14] by sym,exch from wpData
 ```
 It is useful to use both  RSI and MACD together as both measure momentum in a market, but, because they measure different factors, they sometimes give contrary indications. Using both together can provide a clearer picture of the market. RSI could be showing a reading of greater than 70, this would indicate that the the security is overbought, but the MACD is signaling that the market is continuing in the upward direction. 
 
@@ -226,6 +228,8 @@ mfiMain:{[h;l;c;n;v]
 		mf:relativeStrength[n;rmf*diff*diff>0]%relativeStrength[n;abs rmf*diff*diff<0]; /money flow leveraging func for rsi.
 		mfi:100*mf%(1+mf); /money flow as a percentage
 		mfi}
+/-sample query
+update mfi:mfiMain[high;low;close;14;vol] by sym,exch from wpData
 ```
  Figure 6 shows the comparison between MFI graph and the RSI graph:
 
@@ -273,6 +277,8 @@ CCI:{[high;low;close;ndays]
 	mad:maDev[TP;sma;n];
     reciprocal[0.015*mad]*TP-sma  
     }
+/- sample query
+update cci:CCI[high;low;close;14] by sym,exch from wpData
 ```
 
 |![CCI Graph](resources/cci.png)|
@@ -318,6 +324,7 @@ The above graph is the 13-day EMA of the Force Index. It can be seen that the Fo
 forceIndex:{[c;v;n]
 		forceIndex1:1_deltas[0nf;c]*v;
 		n#0nf,(n-1)_ema[2%1+n;forceIndex1]}
+update ForceIndex:forceIndex[close;vol;13] by sym,exch from wpData
 ```
 
 ## EMV - Ease of Movement Value  
@@ -343,6 +350,8 @@ emv:{[h;l;v;s;n]
 		distMoved:deltas[0n;avg(h;l)];
 		(n#0nf),n _mavg[n;distMoved%boxRatio]
 		}
+/- Sample Query
+update EMV:emv[high;low;vol;1000000;14] by sym,exch from wpData
 ```
 |![emv](resources/emv.png)|
 |:--:|
