@@ -416,6 +416,8 @@ stoOcsK:{[c;h;l;n;k]
 stoOscD:{[c;h;l;n;k;d]
 		(a#0n),(a:n+k+d-3)_mavg[d;stoOscK[c;h;l;n;k]]
 		}
+/- Sample Query
+update sC:stoOscCalc[close;high;low;5],sk:stoOscK[close;high;low;5;2], stoOscD[close;high;low;5;2;3]from krakenBitcoin
 
 ```
 ### The Difference Between the Commodity Channel Index (CCI) and the Stochastic Oscillator
@@ -439,7 +441,13 @@ aroonFunc:{[c;n;f]
 
 aroon:{[c;n;f] 
 	100*reciprocal[n]*n-aroonFunc[c;n;f]}
-//aroon[tab`high;25;max]-- aroon up
+
+/- aroon[tab`high;25;max]-- aroon up
+/- aroon[tab`low;25;max]-- aroon down
+aroonOsc:{[h;l;n] aroon[h;n;max] - aroon[l;n;min]}
+
+/- sample
+
 ``` 
  Aroon Oscillator subtracts aroonUp from aroonDown making the range of this Oscillator between -100 and 100. 
 $$ aroonOsc= aroonUp - aroonDown $$
