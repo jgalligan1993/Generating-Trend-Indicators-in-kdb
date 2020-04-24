@@ -98,7 +98,7 @@ Traders analyse where the current trade price lies in relation to the moving ave
 
 It should be noted that a signal/trend indicator would not determine a trading strategy but would be analysed in conjunction with other factors. 
 
-Now using the previously defined "bitcoinKraken" table we can start to apply our own simple moving averages. In the example below the 2 and 5 day moving averages are calculated on the close price. This can be updated to get the moving average of any of the numeric columns like high price for example or you could alter the number of periods used. In Figure 2 the 10 an 20 day moving averages is used. This can be adjusted depending on your needs. Short term traders would be interested in small periods  where as long term investors who want an overall picture of the market would compare large period ranges like 100 and 200 day.
+Now using the previously defined "bitcoinKraken" table we can start to apply our own simple moving averages. In the example below the 2 and 5 day moving averages are calculated on the close price. This can be updated to get the moving average of any of the numeric columns like high price for example or you could alter the number of periods used. In Figure 2 the 10 an 20 day moving averages is used. This can be adjusted depending on your needs. Short term traders would be interested in relatively short time periods where as long term investors who want an overall picture of a security would compare large periods like 100 and 200 days.
  
 ```q
 q)10#update sma2:mavg[2;close],sma5:mavg[5;close] from bitcoinKraken
