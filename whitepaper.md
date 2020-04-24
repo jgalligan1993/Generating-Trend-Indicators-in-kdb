@@ -30,7 +30,7 @@ A python script was created which connected to exchange feeds and extracted the 
 * [Disaster-recovery planning for kdb+ tick systems](https://code.kx.com/v2/wp/disaster-recovery/)  
 * [Query Routing: A kdb+ framework for a scalable, load balanced system](https://code.kx.com/v2/wp/query-routing/)  
 
-To make it easy to follow through this paper and execute the functions/Indicators created there is a sample of End Of Day(EOD) data located in the git repository. This is a small binary flat file which can be loaded in. The EOD data is for bitcoin trading on Kraken and the table is called "bitcoinKraken". This table will used throughout the paper to show how you can apply the functions/indicators to an in-memory kdb+ table.
+To make it easy to follow through this paper and execute the functions/indicators created there is a sample of close data located in the git repository. This is a small binary flat file which can be loaded in. The close data contains the daily high/low/open/close and volume of trades for bitcoin trading on Kraken and the table is called "bitcoinKraken". This table will be used throughout the paper to show how you can apply the functions/indicators to an in-memory kdb+ table.
 
 ```q
 /- To get started please start a q session
