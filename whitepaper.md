@@ -29,6 +29,28 @@ A python script was created which connected to exchange feeds and extracted the 
 * [Kdb+tick profiling for throughput optimization](https://code.kx.com/v2/wp/tick-profiling/)  
 * [Disaster-recovery planning for kdb+ tick systems](https://code.kx.com/v2/wp/disaster-recovery/)  
 * [Query Routing: A kdb+ framework for a scalable, load balanced system](https://code.kx.com/v2/wp/query-routing/)  
+
+To make it easy to follow through this paper and execute the functions below I have attached a sample of End Of Day(EOD) data which is a small binary flat file which can be loaded in. The EOD data is for bitcoin trading on Kraken and the table is called "bitcoinKraken". This table will used throughout the paper to show how you can apply the functions/indicators to an in-memory kdb table.
+
+```q
+/- To get started pleas estart a q session
+\l bitcoinKraken
+\l cryptoFuncs.q
+"loading in cryptoFuncs"
+q)10#bitcoinKraken
+date       sym     exch   high   low    open   close  vol
+--------------------------------------------------------------
+2019.05.09 BTC_USD KRAKEN 6174   6037.9 6042   6151.4 1808.803
+2019.05.10 BTC_USD KRAKEN 6430   6110.1 6151.4 6337.9 9872.36
+2019.05.11 BTC_USD KRAKEN 7450   6338   6339.5 7209.9 18569.93
+2019.05.12 BTC_USD KRAKEN 7588   6724.1 7207.9 6973.9 18620.15
+2019.05.13 BTC_USD KRAKEN 8169.3 6870   6970.1 7816.3 19668.6
+2019.05.14 BTC_USD KRAKEN 8339.9 7620   7817.1 7993.7 18118.61
+2019.05.15 BTC_USD KRAKEN 8296.9 5414.5 7988.9 8203   11599.71
+2019.05.16 BTC_USD KRAKEN 8370   7650   8201.5 7880.7 13419.86
+2019.05.17 BTC_USD KRAKEN 7946.2 6636   7883.6 7350   21017.35
+2019.05.18 BTC_USD KRAKEN 7494.2 7205   7353.9 7266.8 6258.585
+```
   
 # Technical Analysis
 Technical analysis is the process of identifying trading opportunities based on past price movements using different stock charts. Trend/technical traders use a combination of patterns and indicators from price charts to help them make financial decisions. Investors analyse price charts to develop theories about what direction the market is likely to move. Commonly used in technical analysis tools are the Candlestick chart,Moving Average Convergence Divergence and Relative Strength Index. These tools are created using q/kdb+'s in-built functions such as mavg/ema/min/max/avg.  The tools discussed don't predict future prices but provide the investor information to determine their next move. The indicators create buy and sell signals using moving averages, prices, volume, days since previous high or low. The investor can then make his financial decision based on the signals created.
@@ -76,23 +98,9 @@ Traders analyse where the current trade price lies in relation to the moving ave
 
 It should be noted that a signal/trend indicator would not determine a trading strategy but would be analysed in conjunction with other factors. 
 
-The below code snipet shows how you can simply apply an indicator to a in-memory table and automatically see the updated table.
-The table below, "bitcoinKraken", is an example of some End Of Day information including high, low, open, close, volume  for Bitcoin trading on Kraken. This table will be used throughouty the paper to illustrate how to apply some of the indicators to a in-memory table. In this example the simple moving average of the close price for 2 and 5 periods will be shown. 
+Now using the previously defined "bitcoinKraken" table we can start to apply our own simple moving averages. In the example below the 2 and 5 day moving averages are calculated on the close price. This can be updated to get the moving average of any of the numeric columns like high price for example or you could alter the number of periods used. In Figure 2 the 10 an 20 day moving averages is used. This can be adjusted depending on your needs. Short term traders would be interested in small periods  where as long term investors who want an overall picture of the market would compare large period ranges like 100 and 200 day.
+ 
 ```q
-q)10#bitcoinKraken
-date       sym     exch   high   low    open   close  vol
---------------------------------------------------------------
-2019.05.09 BTC_USD KRAKEN 6174   6037.9 6042   6151.4 1808.803
-2019.05.10 BTC_USD KRAKEN 6430   6110.1 6151.4 6337.9 9872.36
-2019.05.11 BTC_USD KRAKEN 7450   6338   6339.5 7209.9 18569.93
-2019.05.12 BTC_USD KRAKEN 7588   6724.1 7207.9 6973.9 18620.15
-2019.05.13 BTC_USD KRAKEN 8169.3 6870   6970.1 7816.3 19668.6
-2019.05.14 BTC_USD KRAKEN 8339.9 7620   7817.1 7993.7 18118.61
-2019.05.15 BTC_USD KRAKEN 8296.9 5414.5 7988.9 8203   11599.71
-2019.05.16 BTC_USD KRAKEN 8370   7650   8201.5 7880.7 13419.86
-2019.05.17 BTC_USD KRAKEN 7946.2 6636   7883.6 7350   21017.35
-2019.05.18 BTC_USD KRAKEN 7494.2 7205   7353.9 7266.8 6258.585
-
 q)10#update sma2:mavg[2;close],sma5:mavg[5;close] from bitcoinKraken
 date       sym     exch   high   low    open   close  vol      sma2    sma5
 -------------------------------------------------------------------------------
@@ -370,6 +378,8 @@ roc:{[c;n]
 		prevP:_[neg n;c];
 		(n#0nf),100*reciprocal[prevP]*curP-prevP
 		}
+/- sample query
+update ROC:roc[close;10] from bitcoinKraken
 ```
 A positive move in the ROC indicates that there was a sharp price advance. This can be seen on the graph in Figure 11 between the 8th and 22nd of June. A downward drop indicates steep decline in the price. This oscillator is prone to whipsaw around the zero line as can be seen in the graph. For the graph  below n=9 is used, which is commonly used by short term traders. 
 
@@ -417,7 +427,7 @@ stoOscD:{[c;h;l;n;k;d]
 		(a#0n),(a:n+k+d-3)_mavg[d;stoOscK[c;h;l;n;k]]
 		}
 /- Sample Query
-update sC:stoOscCalc[close;high;low;5],sk:stoOscK[close;high;low;5;2], stoOscD[close;high;low;5;2;3]from krakenBitcoin
+update sC:stoOscCalc[close;high;low;5],sk:stoOscK[close;high;low;5;2], stoOscD[close;high;low;5;2;3]from bitcoinKraken
 
 ```
 ### The Difference Between the Commodity Channel Index (CCI) and the Stochastic Oscillator
@@ -447,7 +457,7 @@ aroon:{[c;n;f]
 aroonOsc:{[h;l;n] aroon[h;n;max] - aroon[l;n;min]}
 
 /- sample
-
+update aroonUp:aroon[high;25;max],aroonDown:aroon[low;25;min],aroonOsc:aroonOsc[high;low;25] from krakenBitcoin
 ``` 
  Aroon Oscillator subtracts aroonUp from aroonDown making the range of this Oscillator between -100 and 100. 
 $$ aroonOsc= aroonUp - aroonDown $$
