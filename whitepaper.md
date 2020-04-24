@@ -30,10 +30,10 @@ A python script was created which connected to exchange feeds and extracted the 
 * [Disaster-recovery planning for kdb+ tick systems](https://code.kx.com/v2/wp/disaster-recovery/)  
 * [Query Routing: A kdb+ framework for a scalable, load balanced system](https://code.kx.com/v2/wp/query-routing/)  
 
-To make it easy to follow through this paper and execute the functions below I have attached a sample of End Of Day(EOD) data which is a small binary flat file which can be loaded in. The EOD data is for bitcoin trading on Kraken and the table is called "bitcoinKraken". This table will used throughout the paper to show how you can apply the functions/indicators to an in-memory kdb table.
+To make it easy to follow through this paper and execute the functions/Indicators created there is a sample of End Of Day(EOD) data located in the git repository. This is a small binary flat file which can be loaded in. The EOD data is for bitcoin trading on Kraken and the table is called "bitcoinKraken". This table will used throughout the paper to show how you can apply the functions/indicators to an in-memory kdb+ table.
 
 ```q
-/- To get started pleas estart a q session
+/- To get started please start a q session
 \l bitcoinKraken
 \l cryptoFuncs.q
 "loading in cryptoFuncs"
