@@ -34,8 +34,8 @@ To make it easy to follow through this paper and execute the functions/indicator
 
 ```q
 /- To get started please start a q session
-\l bitcoinKraken
-\l cryptoFuncs.q
+q)bitcoinKraken:get `:bitcoinKraken
+q)\l cryptoFuncs.q
 "loading in cryptoFuncs"
 q)10#bitcoinKraken
 date       sym     exch   high   low    open   close  vol
