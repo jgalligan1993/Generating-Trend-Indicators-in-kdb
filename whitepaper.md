@@ -413,7 +413,7 @@ stoOcsK:{[c;h;l;n;k]
 		(a#0nf),(a:n+k-2)_mavg[k;stoOscCalc[c;h;l;n]]
 		}
 
-stoOscD:{[c;h;l;n;k]
+stoOscD:{[c;h;l;n;k;d]
 		(a#0n),(a:n+k+d-3)_mavg[d;stoOscK[c;h;l;n;k]]
 		}
 
